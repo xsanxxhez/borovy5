@@ -25,7 +25,7 @@ export default function Home() {
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">BOROVY</span>
             </Link>
-            
+
             <div className="flex gap-3">
               <Link href="/auth/login" className="px-6 py-2.5 text-blue-700 font-medium hover:text-blue-900 transition-colors">
                 Войти
@@ -51,16 +51,16 @@ export default function Home() {
                   Платформа для вахтовиков
                 </span>
               </div>
-              
+
               <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight animate-fadeIn" style={{animationDelay: '0.1s'}}>
                 Найди работу на
                 <br />
                 <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">вахте</span>
                 {' '}с BOROVY
               </h1>
-              
+
               <p className="text-xl text-gray-600 leading-relaxed animate-fadeIn" style={{animationDelay: '0.2s'}}>
-                Проверенные работодатели, прозрачные условия и удобная система откликов. 
+                Проверенные работодатели, прозрачные условия и удобная система откликов.
                 Твоя следующая вахта начинается здесь!
               </p>
 
@@ -177,7 +177,7 @@ export default function Home() {
               </div>
               <p className="text-gray-400">Платформа для поиска работы на вахте. Надежно, быстро, удобно.</p>
             </div>
-            
+
             <div>
               <h4 className="font-bold mb-4">Навигация</h4>
               <ul className="space-y-2 text-gray-400">
