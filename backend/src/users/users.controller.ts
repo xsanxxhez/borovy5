@@ -1,55 +1,52 @@
-import { Controller, Get, Post, Put, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CreateManagerDto } from './dto/create-manager.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async getProfile(@Request() req) {
-    return this.usersService.getProfile(req.user.userId);
+  async getProfile(@CurrentUser() user: any) {
+    return this.usersService.getProfile(user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put('profile')
-  async updateProfile(@Request() req, @Body() updateData: any) {
-    return this.usersService.updateProfile(req.user.userId, updateData);
+  async updateProfile(@CurrentUser() user: any, @Body() dto: UpdateProfileDto) {
+    return this.usersService.updateProfile(user.id, dto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
   @Post('manager')
-  async createManager(@Body() createManagerDto: { email: string; password: string; fullName: string; phone: string }) {
-    return this.usersService.createManager(
-      createManagerDto.email,
-      createManagerDto.password,
-      createManagerDto.fullName,
-      createManagerDto.phone
-    );
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  async createManager(@Body() createManagerDto: CreateManagerDto) {
+    return this.usersService.createManager(createManagerDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
   @Get('managers')
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   async getAllManagers() {
     return this.usersService.getAllManagers();
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
   @Get('workers')
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   async getAllWorkers() {
     return this.usersService.getAllWorkers();
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('MANAGER')
   @Get('manager/workers')
-  async getManagerWorkers(@Request() req) {
-    return this.usersService.getManagerWorkers(req.user.userId);
+  @Roles('MANAGER')
+  @UseGuards(RolesGuard)
+  async getManagerWorkers(@CurrentUser() user: any) {
+    return this.usersService.getManagerWorkers(user.id);
   }
 }

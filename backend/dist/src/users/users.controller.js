@@ -15,21 +15,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
+const update_profile_dto_1 = require("./dto/update-profile.dto");
+const create_manager_dto_1 = require("./dto/create-manager.dto");
 const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 const roles_guard_1 = require("../common/guards/roles.guard");
 const roles_decorator_1 = require("../common/decorators/roles.decorator");
+const current_user_decorator_1 = require("../common/decorators/current-user.decorator");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    async getProfile(req) {
-        return this.usersService.getProfile(req.user.userId);
+    async getProfile(user) {
+        return this.usersService.getProfile(user.id);
     }
-    async updateProfile(req, updateData) {
-        return this.usersService.updateProfile(req.user.userId, updateData);
+    async updateProfile(user, dto) {
+        return this.usersService.updateProfile(user.id, dto);
     }
     async createManager(createManagerDto) {
-        return this.usersService.createManager(createManagerDto.email, createManagerDto.password, createManagerDto.fullName, createManagerDto.phone);
+        return this.usersService.createManager(createManagerDto);
     }
     async getAllManagers() {
         return this.usersService.getAllManagers();
@@ -37,64 +40,63 @@ let UsersController = class UsersController {
     async getAllWorkers() {
         return this.usersService.getAllWorkers();
     }
-    async getManagerWorkers(req) {
-        return this.usersService.getManagerWorkers(req.user.userId);
+    async getManagerWorkers(user) {
+        return this.usersService.getManagerWorkers(user.id);
     }
 };
 exports.UsersController = UsersController;
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('profile'),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getProfile", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)('profile'),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, update_profile_dto_1.UpdateProfileDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateProfile", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Post)('manager'),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_manager_dto_1.CreateManagerDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "createManager", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Get)('managers'),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllManagers", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('ADMIN'),
     (0, common_1.Get)('workers'),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getAllWorkers", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-    (0, roles_decorator_1.Roles)('MANAGER'),
     (0, common_1.Get)('manager/workers'),
-    __param(0, (0, common_1.Request)()),
+    (0, roles_decorator_1.Roles)('MANAGER'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getManagerWorkers", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('users'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

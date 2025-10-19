@@ -17,85 +17,99 @@ let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async create(email, password, fullName, phone, role = 'WORKER') {
-        const existingUser = await this.prisma.user.findUnique({ where: { email } });
-        if (existingUser) {
-            throw new common_1.ConflictException('Email already exists');
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await this.prisma.user.create({
-            data: {
-                email,
-                password: hashedPassword,
-                fullName,
-                phone,
-                role: role,
-            },
-        });
-        return user;
-    }
-    async findByEmail(email) {
-        return this.prisma.user.findUnique({ where: { email } });
-    }
-    async findById(id) {
-        return this.prisma.user.findUnique({ where: { id } });
-    }
     async getProfile(userId) {
-        const user = await this.prisma.user.findUnique({
+        return this.prisma.user.findUnique({
             where: { id: userId },
-            include: {
-                promoRegistration: {
-                    include: {
-                        promoCode: true,
-                    },
-                },
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                role: true,
+                bio: true,
+                avatar: true,
+                createdAt: true,
             },
         });
-        if (!user) {
-            throw new common_1.NotFoundException('User not found');
-        }
-        const { password, ...result } = user;
-        return result;
     }
-    async updateProfile(userId, updateData) {
-        const user = await this.prisma.user.update({
+    async updateProfile(userId, dto) {
+        return this.prisma.user.update({
             where: { id: userId },
             data: {
-                fullName: updateData.fullName,
-                phone: updateData.phone,
-                bio: updateData.bio,
+                fullName: dto.fullName,
+                phone: dto.phone,
+                bio: dto.bio,
+            },
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                role: true,
+                bio: true,
+                avatar: true,
             },
         });
-        const { password, ...result } = user;
-        return result;
     }
-    async createManager(email, password, fullName, phone) {
-        return this.create(email, password, fullName, phone, 'MANAGER');
+    async createManager(dto) {
+        const existing = await this.prisma.user.findUnique({
+            where: { email: dto.email },
+        });
+        if (existing) {
+            throw new common_1.ConflictException('Email уже используется');
+        }
+        const hashedPassword = await bcrypt.hash(dto.password, 10);
+        return this.prisma.user.create({
+            data: {
+                email: dto.email,
+                password: hashedPassword,
+                fullName: dto.fullName,
+                phone: dto.phone,
+                role: 'MANAGER',
+            },
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                role: true,
+            },
+        });
     }
     async getAllManagers() {
-        const managers = await this.prisma.user.findMany({
+        return this.prisma.user.findMany({
             where: { role: 'MANAGER' },
-            include: {
-                _count: {
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                createdAt: true,
+                promoCodes: {
                     select: {
-                        promoCodes: true,
+                        id: true,
+                        code: true,
+                        usedCount: true,
+                        isActive: true,
                     },
                 },
             },
-        });
-        return managers.map(manager => {
-            const { password, ...result } = manager;
-            return result;
         });
     }
     async getAllWorkers() {
-        const workers = await this.prisma.user.findMany({
+        return this.prisma.user.findMany({
             where: { role: 'WORKER' },
-            include: {
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                createdAt: true,
                 promoRegistration: {
-                    include: {
+                    select: {
                         promoCode: {
-                            include: {
+                            select: {
+                                code: true,
                                 creator: {
                                     select: {
                                         fullName: true,
@@ -106,58 +120,54 @@ let UsersService = class UsersService {
                         },
                     },
                 },
-                applications: {
-                    select: {
-                        id: true,
-                        status: true,
-                        appliedAt: true,
-                    },
-                },
-                _count: {
-                    select: {
-                        applications: true,
-                    },
-                },
             },
-        });
-        return workers.map(worker => {
-            const { password, ...result } = worker;
-            return result;
         });
     }
     async getManagerWorkers(managerId) {
-        const workers = await this.prisma.user.findMany({
+        const promoCodes = await this.prisma.promoCode.findMany({
+            where: { createdBy: managerId },
+            select: { id: true },
+        });
+        const promoCodeIds = promoCodes.map((pc) => pc.id);
+        return this.prisma.user.findMany({
             where: {
-                role: 'WORKER',
                 promoRegistration: {
-                    promoCode: {
-                        createdBy: managerId,
-                    },
+                    promoCodeId: { in: promoCodeIds },
                 },
             },
-            include: {
+            select: {
+                id: true,
+                email: true,
+                fullName: true,
+                phone: true,
+                createdAt: true,
                 promoRegistration: {
-                    include: {
-                        promoCode: true,
+                    select: {
+                        promoCode: {
+                            select: {
+                                code: true,
+                            },
+                        },
+                        registeredAt: true,
                     },
                 },
                 applications: {
                     select: {
                         id: true,
                         status: true,
-                        appliedAt: true,
-                    },
-                },
-                _count: {
-                    select: {
-                        applications: true,
+                        job: {
+                            select: {
+                                title: true,
+                                enterprise: {
+                                    select: {
+                                        name: true,
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
-        });
-        return workers.map(worker => {
-            const { password, ...result } = worker;
-            return result;
         });
     }
 };

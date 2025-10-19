@@ -1,104 +1,113 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CreateManagerDto } from './dto/create-manager.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create(email: string, password: string, fullName: string, phone: string, role: string = 'WORKER') {
-    const existingUser = await this.prisma.user.findUnique({ where: { email } });
-    if (existingUser) {
-      throw new ConflictException('Email already exists');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await this.prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        fullName,
-        phone,
-        role: role as any,
-      },
-    });
-
-    return user;
-  }
-
-  async findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
-  }
-
-  async findById(id: string) {
-    return this.prisma.user.findUnique({ where: { id } });
-  }
-
   async getProfile(userId: string) {
-    const user = await this.prisma.user.findUnique({
+    return this.prisma.user.findUnique({
       where: { id: userId },
-      include: {
-        promoRegistration: {
-          include: {
-            promoCode: true,
-          },
-        },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        role: true,
+        bio: true,
+        avatar: true,
+        createdAt: true,
       },
     });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    const { password, ...result } = user;
-    return result;
   }
 
-  async updateProfile(userId: string, updateData: any) {
-    const user = await this.prisma.user.update({
+  async updateProfile(userId: string, dto: UpdateProfileDto) {
+    return this.prisma.user.update({
       where: { id: userId },
       data: {
-        fullName: updateData.fullName,
-        phone: updateData.phone,
-        bio: updateData.bio,
+        fullName: dto.fullName,
+        phone: dto.phone,
+        bio: dto.bio,
+      },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        role: true,
+        bio: true,
+        avatar: true,
       },
     });
-
-    const { password, ...result } = user;
-    return result;
   }
 
-  async createManager(email: string, password: string, fullName: string, phone: string) {
-    return this.create(email, password, fullName, phone, 'MANAGER');
+  async createManager(dto: CreateManagerDto) {
+    const existing = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    if (existing) {
+      throw new ConflictException('Email уже используется');
+    }
+
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+    return this.prisma.user.create({
+      data: {
+        email: dto.email,
+        password: hashedPassword,
+        fullName: dto.fullName,
+        phone: dto.phone,
+        role: 'MANAGER',
+      },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        role: true,
+      },
+    });
   }
 
   async getAllManagers() {
-    const managers = await this.prisma.user.findMany({
+    return this.prisma.user.findMany({
       where: { role: 'MANAGER' },
-      include: {
-        _count: {
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        createdAt: true,
+        promoCodes: {
           select: {
-            promoCodes: true,
+            id: true,
+            code: true,
+            usedCount: true,
+            isActive: true,
           },
         },
       },
-    });
-
-    return managers.map(manager => {
-      const { password, ...result } = manager;
-      return result;
     });
   }
 
   async getAllWorkers() {
-    const workers = await this.prisma.user.findMany({
+    return this.prisma.user.findMany({
       where: { role: 'WORKER' },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        createdAt: true,
         promoRegistration: {
-          include: {
+          select: {
             promoCode: {
-              include: {
+              select: {
+                code: true,
                 creator: {
                   select: {
                     fullName: true,
@@ -109,62 +118,57 @@ export class UsersService {
             },
           },
         },
-        applications: {
-          select: {
-            id: true,
-            status: true,
-            appliedAt: true,
-          },
-        },
-        _count: {
-          select: {
-            applications: true,
-          },
-        },
       },
-    });
-
-    return workers.map(worker => {
-      const { password, ...result } = worker;
-      return result;
     });
   }
 
   async getManagerWorkers(managerId: string) {
-    // Простой способ - через промокоды менеджера
-    const workers = await this.prisma.user.findMany({
+    const promoCodes = await this.prisma.promoCode.findMany({
+      where: { createdBy: managerId },
+      select: { id: true },
+    });
+
+    const promoCodeIds = promoCodes.map((pc) => pc.id);
+
+    return this.prisma.user.findMany({
       where: {
-        role: 'WORKER',
         promoRegistration: {
-          promoCode: {
-            createdBy: managerId,
-          },
+          promoCodeId: { in: promoCodeIds },
         },
       },
-      include: {
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        createdAt: true,
         promoRegistration: {
-          include: {
-            promoCode: true,
+          select: {
+            promoCode: {
+              select: {
+                code: true,
+              },
+            },
+            registeredAt: true,
           },
         },
         applications: {
           select: {
             id: true,
             status: true,
-            appliedAt: true,
-          },
-        },
-        _count: {
-          select: {
-            applications: true,
+            job: {
+              select: {
+                title: true,
+                enterprise: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
-    });
-
-    return workers.map(worker => {
-      const { password, ...result } = worker;
-      return result;
     });
   }
 }
