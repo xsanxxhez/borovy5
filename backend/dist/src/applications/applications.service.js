@@ -16,42 +16,31 @@ let ApplicationsService = class ApplicationsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async apply(userId, jobId) {
+    async apply(userId, dto) {
         const job = await this.prisma.job.findUnique({
-            where: { id: jobId },
+            where: { id: dto.jobId },
         });
         if (!job) {
-            throw new common_1.NotFoundException('Работа не найдена');
+            throw new common_1.NotFoundException('Вакансия не найдена');
         }
-        if (!job.isActive) {
-            throw new common_1.BadRequestException('Работа неактивна');
-        }
-        const existingApplication = await this.prisma.application.findUnique({
+        const existing = await this.prisma.application.findFirst({
             where: {
-                jobId_userId: {
-                    jobId,
-                    userId,
-                },
+                userId: userId,
+                jobId: dto.jobId,
             },
         });
-        if (existingApplication) {
-            throw new common_1.BadRequestException('Вы уже откликались на эту работу');
+        if (existing) {
+            throw new common_1.BadRequestException('Вы уже откликнулись на эту вакансию');
         }
         return this.prisma.application.create({
             data: {
-                jobId,
                 userId,
-                status: 'APPLIED',
+                jobId: dto.jobId,
             },
             include: {
                 job: {
                     include: {
-                        enterprise: {
-                            select: {
-                                name: true,
-                                location: true,
-                            },
-                        },
+                        enterprise: true,
                     },
                 },
             },
@@ -63,12 +52,7 @@ let ApplicationsService = class ApplicationsService {
             include: {
                 job: {
                     include: {
-                        enterprise: {
-                            select: {
-                                name: true,
-                                location: true,
-                            },
-                        },
+                        enterprise: true,
                     },
                 },
             },
@@ -83,19 +67,15 @@ let ApplicationsService = class ApplicationsService {
                 user: {
                     select: {
                         id: true,
-                        fullName: true,
                         email: true,
+                        fullName: true,
                         phone: true,
                         avatar: true,
                     },
                 },
                 job: {
                     include: {
-                        enterprise: {
-                            select: {
-                                name: true,
-                            },
-                        },
+                        enterprise: true,
                     },
                 },
             },
@@ -104,7 +84,27 @@ let ApplicationsService = class ApplicationsService {
             },
         });
     }
-    async updateStatus(id, status, workEndDate) {
+    async getApplicationsByJob(jobId) {
+        return this.prisma.application.findMany({
+            where: { jobId },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        email: true,
+                        fullName: true,
+                        phone: true,
+                        bio: true,
+                        avatar: true,
+                    },
+                },
+            },
+            orderBy: {
+                appliedAt: 'desc',
+            },
+        });
+    }
+    async approve(id, dto) {
         const application = await this.prisma.application.findUnique({
             where: { id },
         });
@@ -114,53 +114,50 @@ let ApplicationsService = class ApplicationsService {
         return this.prisma.application.update({
             where: { id },
             data: {
-                status,
-                workEndDate: workEndDate || undefined,
+                status: 'APPROVED',
+                workEndDate: dto.workEndDate ? new Date(dto.workEndDate) : undefined,
             },
             include: {
-                user: {
-                    select: {
-                        id: true,
-                        fullName: true,
-                        email: true,
-                    },
-                },
+                user: true,
                 job: {
-                    select: {
-                        title: true,
+                    include: {
+                        enterprise: true,
                     },
                 },
             },
         });
     }
-    async approve(id, workEndDate) {
-        return this.updateStatus(id, 'APPROVED', workEndDate);
-    }
     async reject(id) {
-        return this.updateStatus(id, 'REJECTED');
+        const application = await this.prisma.application.findUnique({
+            where: { id },
+        });
+        if (!application) {
+            throw new common_1.NotFoundException('Отклик не найден');
+        }
+        return this.prisma.application.update({
+            where: { id },
+            data: {
+                status: 'REJECTED',
+            },
+            include: {
+                user: true,
+                job: true,
+            },
+        });
     }
     async remove(id) {
-        return this.updateStatus(id, 'REMOVED');
+        return this.prisma.application.update({
+            where: { id },
+            data: {
+                status: 'REMOVED',
+            },
+        });
     }
     async markAsDone(id) {
-        return this.updateStatus(id, 'DONE');
-    }
-    async getApplicationsByJob(jobId) {
-        return this.prisma.application.findMany({
-            where: { jobId },
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        fullName: true,
-                        email: true,
-                        phone: true,
-                        avatar: true,
-                    },
-                },
-            },
-            orderBy: {
-                appliedAt: 'desc',
+        return this.prisma.application.update({
+            where: { id },
+            data: {
+                status: 'DONE',
             },
         });
     }

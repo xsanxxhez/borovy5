@@ -1,51 +1,41 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { ApplyJobDto } from './dto/apply-job.dto';
+import { UpdateApplicationStatusDto } from './dto/update-application-status.dto';
 
 @Injectable()
 export class ApplicationsService {
   constructor(private prisma: PrismaService) {}
 
-  async apply(userId: string, jobId: string) {
+  async apply(userId: string, dto: ApplyJobDto) {
     const job = await this.prisma.job.findUnique({
-      where: { id: jobId },
+      where: { id: dto.jobId },
     });
 
     if (!job) {
-      throw new NotFoundException('Работа не найдена');
+      throw new NotFoundException('Вакансия не найдена');
     }
 
-    if (!job.isActive) {
-      throw new BadRequestException('Работа неактивна');
-    }
-
-    const existingApplication = await this.prisma.application.findUnique({
+    const existing = await this.prisma.application.findFirst({
       where: {
-        jobId_userId: {
-          jobId,
-          userId,
-        },
+        userId: userId,
+        jobId: dto.jobId,
       },
     });
 
-    if (existingApplication) {
-      throw new BadRequestException('Вы уже откликались на эту работу');
+    if (existing) {
+      throw new BadRequestException('Вы уже откликнулись на эту вакансию');
     }
 
     return this.prisma.application.create({
       data: {
-        jobId,
         userId,
-        status: 'APPLIED',
+        jobId: dto.jobId,
       },
       include: {
         job: {
           include: {
-            enterprise: {
-              select: {
-                name: true,
-                location: true,
-              },
-            },
+            enterprise: true,
           },
         },
       },
@@ -58,12 +48,7 @@ export class ApplicationsService {
       include: {
         job: {
           include: {
-            enterprise: {
-              select: {
-                name: true,
-                location: true,
-              },
-            },
+            enterprise: true,
           },
         },
       },
@@ -79,19 +64,15 @@ export class ApplicationsService {
         user: {
           select: {
             id: true,
-            fullName: true,
             email: true,
+            fullName: true,
             phone: true,
             avatar: true,
           },
         },
         job: {
           include: {
-            enterprise: {
-              select: {
-                name: true,
-              },
-            },
+            enterprise: true,
           },
         },
       },
@@ -101,7 +82,28 @@ export class ApplicationsService {
     });
   }
 
-  async updateStatus(id: string, status: 'APPROVED' | 'REJECTED' | 'REMOVED' | 'DONE', workEndDate?: Date) {
+  async getApplicationsByJob(jobId: string) {
+    return this.prisma.application.findMany({
+      where: { jobId },
+      include: {
+        user: {
+          select: {
+            id: true,
+            email: true,
+            fullName: true,
+            phone: true,
+            bio: true,
+            avatar: true,
+          },
+        },
+      },
+      orderBy: {
+        appliedAt: 'desc',
+      },
+    });
+  }
+
+  async approve(id: string, dto: UpdateApplicationStatusDto) {
     const application = await this.prisma.application.findUnique({
       where: { id },
     });
@@ -113,58 +115,55 @@ export class ApplicationsService {
     return this.prisma.application.update({
       where: { id },
       data: {
-        status,
-        workEndDate: workEndDate || undefined,
+        status: 'APPROVED',
+        workEndDate: dto.workEndDate ? new Date(dto.workEndDate) : undefined,
       },
       include: {
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            email: true,
-          },
-        },
+        user: true,
         job: {
-          select: {
-            title: true,
+          include: {
+            enterprise: true,
           },
         },
       },
     });
   }
 
-  async approve(id: string, workEndDate: Date) {
-    return this.updateStatus(id, 'APPROVED', workEndDate);
-  }
-
   async reject(id: string) {
-    return this.updateStatus(id, 'REJECTED');
+    const application = await this.prisma.application.findUnique({
+      where: { id },
+    });
+
+    if (!application) {
+      throw new NotFoundException('Отклик не найден');
+    }
+
+    return this.prisma.application.update({
+      where: { id },
+      data: {
+        status: 'REJECTED',
+      },
+      include: {
+        user: true,
+        job: true,
+      },
+    });
   }
 
   async remove(id: string) {
-    return this.updateStatus(id, 'REMOVED');
+    return this.prisma.application.update({
+      where: { id },
+      data: {
+        status: 'REMOVED',
+      },
+    });
   }
 
   async markAsDone(id: string) {
-    return this.updateStatus(id, 'DONE');
-  }
-
-  async getApplicationsByJob(jobId: string) {
-    return this.prisma.application.findMany({
-      where: { jobId },
-      include: {
-        user: {
-          select: {
-            id: true,
-            fullName: true,
-            email: true,
-            phone: true,
-            avatar: true,
-          },
-        },
-      },
-      orderBy: {
-        appliedAt: 'desc',
+    return this.prisma.application.update({
+      where: { id },
+      data: {
+        status: 'DONE',
       },
     });
   }

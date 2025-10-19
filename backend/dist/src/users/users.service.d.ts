@@ -7,51 +7,45 @@ export declare class UsersService {
         email: string;
         password: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     findByEmail(email: string): Promise<{
         id: string;
         email: string;
         password: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     findById(id: string): Promise<{
         id: string;
         email: string;
         password: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     getProfile(userId: string): Promise<{
         promoRegistration: {
@@ -62,6 +56,7 @@ export declare class UsersService {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -72,50 +67,44 @@ export declare class UsersService {
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     updateProfile(userId: string, updateData: any): Promise<{
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     createManager(email: string, password: string, fullName: string, phone: string): Promise<{
         id: string;
         email: string;
         password: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     getAllManagers(): Promise<{
         _count: {
@@ -124,24 +113,17 @@ export declare class UsersService {
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
     getAllWorkers(): Promise<{
-        applications: {
-            id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
-            appliedAt: Date;
-        }[];
         promoRegistration: {
             promoCode: {
                 creator: {
@@ -155,6 +137,7 @@ export declare class UsersService {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -162,30 +145,28 @@ export declare class UsersService {
             promoCodeId: string;
             registeredAt: Date;
         };
+        applications: {
+            id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
+        }[];
         _count: {
             applications: number;
         };
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
     getManagerWorkers(managerId: string): Promise<{
-        applications: {
-            id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
-            appliedAt: Date;
-        }[];
         promoRegistration: {
             promoCode: {
                 id: string;
@@ -194,6 +175,7 @@ export declare class UsersService {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -201,22 +183,25 @@ export declare class UsersService {
             promoCodeId: string;
             registeredAt: Date;
         };
+        applications: {
+            id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
+        }[];
         _count: {
             applications: number;
         };
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
 }

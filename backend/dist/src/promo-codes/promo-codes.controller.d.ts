@@ -16,6 +16,7 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     }>;
     findAll(): Promise<({
         creator: {
@@ -34,6 +35,7 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     })[]>;
     findMyPromoCodes(user: any): Promise<({
         _count: {
@@ -46,6 +48,7 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     })[]>;
     validatePromoCode(code: string): Promise<{
         valid: boolean;
@@ -59,6 +62,7 @@ export declare class PromoCodesController {
             description: string | null;
             isActive: boolean;
             createdBy: string;
+            usedCount: number;
         };
     }>;
     getPromoCodeStats(id: string): Promise<{
@@ -85,6 +89,7 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     }>;
     toggleActive(id: string): Promise<{
         id: string;
@@ -93,6 +98,7 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     }>;
     delete(id: string, user: any): Promise<{
         id: string;
@@ -101,5 +107,6 @@ export declare class PromoCodesController {
         description: string | null;
         isActive: boolean;
         createdBy: string;
+        usedCount: number;
     }>;
 }

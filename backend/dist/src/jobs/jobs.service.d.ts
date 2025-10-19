@@ -13,7 +13,7 @@ export declare class JobsService {
             description: string | null;
             isActive: boolean;
             location: string;
-            contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+            contactInfo: import("@prisma/client/runtime/library").JsonValue;
         };
     } & {
         id: string;
@@ -24,7 +24,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -46,7 +46,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -60,7 +60,7 @@ export declare class JobsService {
             description: string | null;
             isActive: boolean;
             location: string;
-            contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+            contactInfo: import("@prisma/client/runtime/library").JsonValue;
         };
         _count: {
             applications: number;
@@ -74,7 +74,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -90,7 +90,6 @@ export declare class JobsService {
             };
         } & {
             id: string;
-            updatedAt: Date;
             userId: string;
             jobId: string;
             status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -105,7 +104,7 @@ export declare class JobsService {
             description: string | null;
             isActive: boolean;
             location: string;
-            contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+            contactInfo: import("@prisma/client/runtime/library").JsonValue;
         };
     } & {
         id: string;
@@ -116,7 +115,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -134,7 +133,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -148,7 +147,7 @@ export declare class JobsService {
             description: string | null;
             isActive: boolean;
             location: string;
-            contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+            contactInfo: import("@prisma/client/runtime/library").JsonValue;
         };
     } & {
         id: string;
@@ -159,7 +158,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -173,7 +172,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;
@@ -187,7 +186,7 @@ export declare class JobsService {
         location: string;
         enterpriseId: string;
         title: string;
-        requirements: string | null;
+        requirements: string;
         salaryMin: number | null;
         salaryMax: number | null;
         workConditions: string | null;

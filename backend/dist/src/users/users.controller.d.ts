@@ -11,6 +11,7 @@ export declare class UsersController {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -21,33 +22,29 @@ export declare class UsersController {
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     updateProfile(req: any, updateData: any): Promise<{
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     createManager(createManagerDto: {
         email: string;
@@ -59,17 +56,15 @@ export declare class UsersController {
         email: string;
         password: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }>;
     getAllManagers(): Promise<{
         _count: {
@@ -78,24 +73,17 @@ export declare class UsersController {
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
     getAllWorkers(): Promise<{
-        applications: {
-            id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
-            appliedAt: Date;
-        }[];
         promoRegistration: {
             promoCode: {
                 creator: {
@@ -109,6 +97,7 @@ export declare class UsersController {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -116,30 +105,28 @@ export declare class UsersController {
             promoCodeId: string;
             registeredAt: Date;
         };
+        applications: {
+            id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
+        }[];
         _count: {
             applications: number;
         };
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
     getManagerWorkers(req: any): Promise<{
-        applications: {
-            id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
-            appliedAt: Date;
-        }[];
         promoRegistration: {
             promoCode: {
                 id: string;
@@ -148,6 +135,7 @@ export declare class UsersController {
                 description: string | null;
                 isActive: boolean;
                 createdBy: string;
+                usedCount: number;
             };
         } & {
             id: string;
@@ -155,22 +143,25 @@ export declare class UsersController {
             promoCodeId: string;
             registeredAt: Date;
         };
+        applications: {
+            id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
+        }[];
         _count: {
             applications: number;
         };
         id: string;
         email: string;
         fullName: string;
-        phone: string;
+        phone: string | null;
         role: import(".prisma/client").$Enums.Role;
-        avatar: string | null;
         bio: string | null;
-        socialLinks: import("@prisma/client/runtime/library").JsonValue | null;
+        avatar: string | null;
+        resetToken: string | null;
         agreedToTerms: boolean;
         agreedToPrivacy: boolean;
         createdAt: Date;
         updatedAt: Date;
-        resetToken: string | null;
-        resetTokenExpiry: Date | null;
     }[]>;
 }

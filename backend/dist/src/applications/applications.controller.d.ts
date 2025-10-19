@@ -7,8 +7,14 @@ export declare class ApplicationsController {
     apply(user: any, dto: ApplyJobDto): Promise<{
         job: {
             enterprise: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
                 name: string;
+                description: string | null;
+                isActive: boolean;
                 location: string;
+                contactInfo: import("@prisma/client/runtime/library").JsonValue;
             };
         } & {
             id: string;
@@ -19,14 +25,13 @@ export declare class ApplicationsController {
             location: string;
             enterpriseId: string;
             title: string;
-            requirements: string | null;
+            requirements: string;
             salaryMin: number | null;
             salaryMax: number | null;
             workConditions: string | null;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -36,8 +41,14 @@ export declare class ApplicationsController {
     getMyApplications(user: any): Promise<({
         job: {
             enterprise: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
                 name: string;
+                description: string | null;
+                isActive: boolean;
                 location: string;
+                contactInfo: import("@prisma/client/runtime/library").JsonValue;
             };
         } & {
             id: string;
@@ -48,14 +59,13 @@ export declare class ApplicationsController {
             location: string;
             enterpriseId: string;
             title: string;
-            requirements: string | null;
+            requirements: string;
             salaryMin: number | null;
             salaryMax: number | null;
             workConditions: string | null;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -72,7 +82,14 @@ export declare class ApplicationsController {
         };
         job: {
             enterprise: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
                 name: string;
+                description: string | null;
+                isActive: boolean;
+                location: string;
+                contactInfo: import("@prisma/client/runtime/library").JsonValue;
             };
         } & {
             id: string;
@@ -83,14 +100,13 @@ export declare class ApplicationsController {
             location: string;
             enterpriseId: string;
             title: string;
-            requirements: string | null;
+            requirements: string;
             salaryMin: number | null;
             salaryMax: number | null;
             workConditions: string | null;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -103,11 +119,11 @@ export declare class ApplicationsController {
             email: string;
             fullName: string;
             phone: string;
+            bio: string;
             avatar: string;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -118,14 +134,45 @@ export declare class ApplicationsController {
         user: {
             id: string;
             email: string;
+            password: string;
             fullName: string;
+            phone: string | null;
+            role: import(".prisma/client").$Enums.Role;
+            bio: string | null;
+            avatar: string | null;
+            resetToken: string | null;
+            agreedToTerms: boolean;
+            agreedToPrivacy: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         };
         job: {
+            enterprise: {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                name: string;
+                description: string | null;
+                isActive: boolean;
+                location: string;
+                contactInfo: import("@prisma/client/runtime/library").JsonValue;
+            };
+        } & {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            isActive: boolean;
+            location: string;
+            enterpriseId: string;
             title: string;
+            requirements: string;
+            salaryMin: number | null;
+            salaryMax: number | null;
+            workConditions: string | null;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -136,14 +183,34 @@ export declare class ApplicationsController {
         user: {
             id: string;
             email: string;
+            password: string;
             fullName: string;
+            phone: string | null;
+            role: import(".prisma/client").$Enums.Role;
+            bio: string | null;
+            avatar: string | null;
+            resetToken: string | null;
+            agreedToTerms: boolean;
+            agreedToPrivacy: boolean;
+            createdAt: Date;
+            updatedAt: Date;
         };
         job: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            description: string;
+            isActive: boolean;
+            location: string;
+            enterpriseId: string;
             title: string;
+            requirements: string;
+            salaryMin: number | null;
+            salaryMax: number | null;
+            workConditions: string | null;
         };
     } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -151,17 +218,7 @@ export declare class ApplicationsController {
         workEndDate: Date | null;
     }>;
     remove(id: string): Promise<{
-        user: {
-            id: string;
-            email: string;
-            fullName: string;
-        };
-        job: {
-            title: string;
-        };
-    } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;
@@ -169,17 +226,7 @@ export declare class ApplicationsController {
         workEndDate: Date | null;
     }>;
     markAsDone(id: string): Promise<{
-        user: {
-            id: string;
-            email: string;
-            fullName: string;
-        };
-        job: {
-            title: string;
-        };
-    } & {
         id: string;
-        updatedAt: Date;
         userId: string;
         jobId: string;
         status: import(".prisma/client").$Enums.ApplicationStatus;

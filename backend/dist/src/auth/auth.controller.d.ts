@@ -7,22 +7,25 @@ export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
     register(dto: RegisterDto): Promise<{
+        access_token: string;
         user: {
             id: string;
             email: string;
             fullName: string;
             role: import(".prisma/client").$Enums.Role;
         };
-        access_token: string;
     }>;
     login(dto: LoginDto): Promise<{
+        access_token: string;
         user: {
             id: string;
             email: string;
             fullName: string;
             role: import(".prisma/client").$Enums.Role;
+            phone: string;
+            bio: string;
+            avatar: string;
         };
-        access_token: string;
     }>;
     requestPasswordReset(dto: RequestPasswordResetDto): Promise<{
         message: string;

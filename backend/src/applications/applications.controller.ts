@@ -1,95 +1,68 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Patch,
-  Body, 
-  Param, 
-  UseGuards,
-} from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { Controller, Post, Get, Patch, Param, Body, UseGuards } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
+import { ApplyJobDto } from './dto/apply-job.dto';
+import { UpdateApplicationStatusDto } from './dto/update-application-status.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
-import { ApplyJobDto } from './dto/apply-job.dto';
-import { UpdateApplicationStatusDto } from './dto/update-application-status.dto';
 
-@ApiTags('applications')
 @Controller('applications')
+@UseGuards(JwtAuthGuard)
 export class ApplicationsController {
   constructor(private applicationsService: ApplicationsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('WORKER')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Откликнуться на работу (только работник)' })
-  apply(@CurrentUser() user: any, @Body() dto: ApplyJobDto) {
-    return this.applicationsService.apply(user.id, dto.jobId);
+  @UseGuards(RolesGuard)
+  async apply(@CurrentUser() user: any, @Body() dto: ApplyJobDto) {
+    return this.applicationsService.apply(user.id, dto);
   }
 
   @Get('my')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('WORKER')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Получить мои отклики (только работник)' })
-  getMyApplications(@CurrentUser() user: any) {
+  async getMyApplications(@CurrentUser() user: any) {
     return this.applicationsService.getMyApplications(user.id);
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Получить все отклики (только админ)' })
-  getAllApplications() {
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async getAllApplications() {
     return this.applicationsService.getAllApplications();
   }
 
   @Get('job/:jobId')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Получить отклики по работе (только админ)' })
-  getApplicationsByJob(@Param('jobId') jobId: string) {
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async getApplicationsByJob(@Param('jobId') jobId: string) {
     return this.applicationsService.getApplicationsByJob(jobId);
   }
 
   @Patch(':id/approve')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Одобрить отклик (только админ)' })
-  approve(@Param('id') id: string, @Body() dto: UpdateApplicationStatusDto) {
-    return this.applicationsService.approve(id, dto.workEndDate);
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async approve(@Param('id') id: string, @Body() dto: UpdateApplicationStatusDto) {
+    return this.applicationsService.approve(id, dto);
   }
 
   @Patch(':id/reject')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Отклонить отклик (только админ)' })
-  reject(@Param('id') id: string) {
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async reject(@Param('id') id: string) {
     return this.applicationsService.reject(id);
   }
 
   @Patch(':id/remove')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Удалить работника с работы (только админ)' })
-  remove(@Param('id') id: string) {
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async remove(@Param('id') id: string) {
     return this.applicationsService.remove(id);
   }
 
   @Patch(':id/done')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Отметить работу как завершенную (только админ)' })
-  markAsDone(@Param('id') id: string) {
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(RolesGuard)
+  async markAsDone(@Param('id') id: string) {
     return this.applicationsService.markAsDone(id);
   }
 }

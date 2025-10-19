@@ -12,7 +12,7 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     }>;
     findAll(): Promise<({
         _count: {
@@ -26,7 +26,7 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     })[]>;
     findOne(id: string): Promise<{
         jobs: ({
@@ -42,7 +42,7 @@ export declare class EnterprisesService {
             location: string;
             enterpriseId: string;
             title: string;
-            requirements: string | null;
+            requirements: string;
             salaryMin: number | null;
             salaryMax: number | null;
             workConditions: string | null;
@@ -55,7 +55,7 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     }>;
     update(id: string, dto: UpdateEnterpriseDto): Promise<{
         id: string;
@@ -65,7 +65,7 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -75,7 +75,7 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     }>;
     toggleActive(id: string): Promise<{
         id: string;
@@ -85,6 +85,6 @@ export declare class EnterprisesService {
         description: string | null;
         isActive: boolean;
         location: string;
-        contactInfo: import("@prisma/client/runtime/library").JsonValue | null;
+        contactInfo: import("@prisma/client/runtime/library").JsonValue;
     }>;
 }
