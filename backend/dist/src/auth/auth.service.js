@@ -53,12 +53,13 @@ let AuthService = class AuthService {
                     promoCodeId: promoCode.id,
                 },
             });
+            const currentCount = await this.prisma.promoRegistration.count({
+                where: { promoCodeId: promoCode.id },
+            });
             await this.prisma.promoCode.update({
                 where: { id: promoCode.id },
                 data: {
-                    usedCount: {
-                        increment: 1,
-                    },
+                    usedCount: currentCount,
                 },
             });
         }
