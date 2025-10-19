@@ -1,12 +1,11 @@
-import { getToken } from "./auth";
-
 export async function api(endpoint: string, options: RequestInit = {}) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-  const token = getToken();
   
-  const headers: HeadersInit = {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...options.headers,
+    ...(options.headers as Record<string, string> || {}),
   };
   
   if (token) {
@@ -17,11 +16,11 @@ export async function api(endpoint: string, options: RequestInit = {}) {
     ...options,
     headers,
   });
-  
+
   if (!res.ok) {
-    const error = await res.text();
-    throw new Error(error);
+    const error = await res.json().catch(() => ({ message: "Network error" }));
+    throw new Error(error.message || "API Error");
   }
-  
+
   return res.json();
 }
