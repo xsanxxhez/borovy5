@@ -160,13 +160,9 @@ export default function Home() {
                   <span>🚀</span>
                   Начать карьеру
                 </Link>
-                <Link
-                  href="#difference"
-                  className="px-6 sm:px-8 py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:border-blue-500 hover:text-blue-700 transition-all text-center hover:shadow-lg transform hover:scale-105 flex items-center justify-center gap-2"
-                >
-                  <span>📖</span>
-                  Узнать больше
-                </Link>
+                <Link href="/vacancies" className="px-8 py-4 border-2 border-gray-300 rounded-xl font-semibold text-gray-700 hover:border-blue-500 hover:text-blue-700 transition-all text-center">
+                                  Смотреть вакансии!
+                 </Link>
               </div>
 
 
