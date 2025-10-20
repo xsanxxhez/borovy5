@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+
 export default function Vacancies() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
   useEffect(() => {
-    fetch("http://localhost:3001/jobs")
+    fetch(`${baseUrl}/jobs`)
       .then(res => res.json())
       .then(data => setJobs(data))
       .catch(console.error)
@@ -27,7 +29,7 @@ export default function Vacancies() {
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">BOROVY</span>
             </Link>
-            
+
             <div className="flex gap-3">
               <Link href="/auth/login" className="px-6 py-2.5 text-blue-700 font-medium hover:text-blue-900 transition-colors">
                 Войти
@@ -63,7 +65,7 @@ export default function Vacancies() {
                       Активна
                     </div>
                   </div>
-                  
+
                   <p className="text-sm text-gray-600 mb-4 flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -96,8 +98,8 @@ export default function Vacancies() {
                 </div>
 
                 <div className="px-6 py-4 bg-gray-50 border-t">
-                  <Link 
-                    href="/auth/register" 
+                  <Link
+                    href="/auth/register"
                     className="block w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center rounded-lg font-semibold hover:shadow-lg transition-all"
                   >
                     Откликнуться
