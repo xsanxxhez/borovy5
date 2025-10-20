@@ -3,8 +3,32 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+interface Job {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  salaryMin: number;
+  salaryMax: number;
+  workConditions?: string;
+  requirements?: string;
+  createdAt: string;
+  enterprise?: {
+    name: string;
+  };
+  _count?: {
+    applications: number;
+  };
+}
+
+interface Application {
+  id: string;
+  jobId: string;
+  status: string;
+}
+
 export default function WorkerJobs() {
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("all");
@@ -35,8 +59,8 @@ export default function WorkerJobs() {
 
   async function loadAppliedJobs() {
     try {
-      const applications = await api("/applications/my");
-      const appliedIds = new Set(applications.map((app: any) => app.jobId));
+      const applications: Application[] = await api("/applications/my");
+      const appliedIds = new Set(applications.map((app) => app.jobId));
       setAppliedJobs(appliedIds);
     } catch (error) {
       console.error("Ошибка загрузки откликов:", error);
@@ -64,11 +88,9 @@ export default function WorkerJobs() {
 
   // Получаем уникальные локации для фильтра
   const locations = [...new Set(jobs.map(job => job.location).filter(Boolean))];
-  // Получаем типы работ из условий работы
-  const workTypes = ["Вахта", "Гражданка", "Смены", "Удаленка", "Проектная"];
 
   // Фильтрация
-  let filteredJobs = jobs.filter(job => {
+  const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          job.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -92,15 +114,17 @@ export default function WorkerJobs() {
   });
 
   // Сортировка
-  if (sortBy === "salary-high") {
-    filteredJobs.sort((a, b) => (b.salaryMax || 0) - (a.salaryMax || 0));
-  } else if (sortBy === "salary-low") {
-    filteredJobs.sort((a, b) => (a.salaryMin || 0) - (b.salaryMin || 0));
-  } else if (sortBy === "applications") {
-    filteredJobs.sort((a, b) => (b._count?.applications || 0) - (a._count?.applications || 0));
-  } else {
-    filteredJobs.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
+    if (sortBy === "salary-high") {
+      return (b.salaryMax || 0) - (a.salaryMax || 0);
+    } else if (sortBy === "salary-low") {
+      return (a.salaryMin || 0) - (b.salaryMin || 0);
+    } else if (sortBy === "applications") {
+      return (b._count?.applications || 0) - (a._count?.applications || 0);
+    } else {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    }
+  });
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
@@ -141,7 +165,7 @@ export default function WorkerJobs() {
             Доступные работы
           </h1>
           <p className="text-gray-900 mt-1 text-sm sm:text-base">
-            Найдено {filteredJobs.length} из {jobs.length} вакансий
+            Найдено {sortedJobs.length} из {jobs.length} вакансий
           </p>
         </div>
 
@@ -333,7 +357,7 @@ export default function WorkerJobs() {
 
       {/* Jobs List */}
       <div className={viewMode === "grid" ? "grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6" : "space-y-4"}>
-        {filteredJobs.map((job, index) => (
+        {sortedJobs.map((job, index) => (
           <div
             key={job.id}
             className={`bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 overflow-hidden group animate-fadeIn ${
@@ -429,7 +453,7 @@ export default function WorkerJobs() {
         ))}
       </div>
 
-      {filteredJobs.length === 0 && (
+      {sortedJobs.length === 0 && (
         <div className="bg-white rounded-2xl shadow-lg border p-6 sm:p-12 text-center">
           <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
             <svg className="w-8 h-8 sm:w-12 sm:h-12 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
