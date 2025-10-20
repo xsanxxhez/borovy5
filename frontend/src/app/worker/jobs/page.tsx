@@ -265,22 +265,7 @@ export default function WorkerJobs() {
             </select>
           </div>
 
-          {/* Work Type Filter */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">⚡ Тип работы</label>
-            <select
-              value={workTypeFilter}
-              onChange={(e) => setWorkTypeFilter(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors cursor-pointer text-gray-900 bg-white text-base"
-            >
-              <option value="all">🔄 Все типы</option>
-              <option value="Вахта">🏕️ Вахта</option>
-              <option value="Гражданка">🏠 Гражданка</option>
-              <option value="Смены">🔄 Смены</option>
-              <option value="Удаленка">🏠 Удаленка</option>
-              <option value="Проектная">📋 Проектная</option>
-            </select>
-          </div>
+
 
           {/* Experience Filter */}
           <div>
@@ -365,19 +350,8 @@ export default function WorkerJobs() {
             } ${appliedJobs.has(job.id) ? 'ring-2 ring-green-200' : ''}`}
             style={{ animationDelay: `${index * 0.05}s` }}
           >
-            {/* NEW Badge */}
-            {new Date().getTime() - new Date(job.createdAt).getTime() < 86400000 && (
-              <div className="absolute top-3 right-3 px-2 py-1 bg-gradient-to-r from-red-600 to-pink-600 rounded-full text-white text-xs font-bold uppercase shadow-lg animate-pulse z-10 flex items-center gap-1">
-                <span className="text-xs">🔥</span> NEW
-              </div>
-            )}
 
-            {/* Applied Badge */}
-            {appliedJobs.has(job.id) && (
-              <div className="absolute top-3 left-3 px-2 py-1 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full text-white text-xs font-bold uppercase shadow-lg z-10 flex items-center gap-1">
-                <span className="text-xs">✅</span> Ваш отклик
-              </div>
-            )}
+
 
             <div className={`p-4 sm:p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
               <div className="mb-3 sm:mb-4">
