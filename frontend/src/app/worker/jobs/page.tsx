@@ -120,7 +120,7 @@ export default function WorkerJobs() {
     } else if (sortBy === "salary-low") {
       return (a.salaryMin || 0) - (b.salaryMin || 0);
     } else if (sortBy === "applications") {
-      return (b._count?.applications || 0) - (a._count?.applications || 0);
+      return ((b._count?.applications || 0)) - ((a._count?.applications || 0));
     } else {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     }
@@ -360,7 +360,7 @@ export default function WorkerJobs() {
         {sortedJobs.map((job, index) => (
           <div
             key={job.id}
-            className={`bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 overflow-hidden group animate-fadeIn ${
+            className={`bg-white rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl hover:border-blue-300 transition-all duration-300 overflow-hidden group animate-fadeIn relative ${
               viewMode === "list" ? "flex flex-col sm:flex-row" : ""
             } ${appliedJobs.has(job.id) ? 'ring-2 ring-green-200' : ''}`}
             style={{ animationDelay: `${index * 0.05}s` }}
@@ -416,7 +416,7 @@ export default function WorkerJobs() {
                 <div className="px-2 py-1 bg-blue-100 text-blue-900 rounded-full text-xs font-semibold flex items-center gap-1">
                   📍 {job.location}
                 </div>
-                {job._count?.applications > 0 && (
+                {job._count && job._count.applications > 0 && (
                   <div className="px-2 py-1 bg-purple-100 text-purple-900 rounded-full text-xs font-semibold flex items-center gap-1">
                     👥 {job._count.applications}
                   </div>
