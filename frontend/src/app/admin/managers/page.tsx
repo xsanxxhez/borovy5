@@ -3,8 +3,19 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+interface Manager {
+  id: string;
+  email: string;
+  fullName: string;
+  phone: string;
+  _count: {
+    promoCodes: number;
+    registrations: number;
+  };
+}
+
 export default function AdminManagers() {
-  const [managers, setManagers] = useState<any[]>([]);
+  const [managers, setManagers] = useState<Manager[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", fullName: "", phone: "" });
