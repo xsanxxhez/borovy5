@@ -13,19 +13,24 @@ export default function AdminWorkers() {
   }, []);
 
   async function loadWorkers() {
+    setLoading(true);
     try {
       const data = await api("/users/workers");
-      setWorkers(data);
+      if (Array.isArray(data)) {
+        setWorkers(data);
+      } else {
+        setWorkers([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Ошибка загрузки работников:", error);
+      setWorkers([]);
     } finally {
       setLoading(false);
     }
   }
 
   const filteredWorkers = workers.filter(w =>
-    w.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    w.email.toLowerCase().includes(searchQuery.toLowerCase())
+    (w.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) || w.email?.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   if (loading) return (
@@ -54,45 +59,48 @@ export default function AdminWorkers() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredWorkers.map((worker, index) => (
-          <div
-            key={worker.id}
-            className="bg-white rounded-2xl shadow-md border hover:shadow-xl transition-all animate-fadeIn"
-            style={{ animationDelay: `${index * 0.05}s` }}
-          >
-            <div className="h-2 bg-gradient-to-r from-blue-600 to-cyan-600"></div>
-            <div className="p-6">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center text-2xl font-black text-white shadow-lg">
-                  {worker.fullName.charAt(0)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-lg text-gray-900 truncate">{worker.fullName}</h3>
-                  <p className="text-sm text-gray-600 truncate">{worker.email}</p>
-                  <p className="text-sm text-gray-600">{worker.phone}</p>
-                </div>
-              </div>
-              {worker.promoRegistration && (
-                <div className="mb-3 p-2 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="text-xs font-semibold text-green-600">Промокод</div>
-                  <div className="font-mono font-bold text-green-700 text-sm">{worker.promoRegistration.promoCode.code}</div>
-                </div>
-              )}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="text-center p-3 bg-gray-50 rounded-xl">
-                  <div className="text-2xl font-bold text-gray-900">{worker._count?.applications || 0}</div>
-                  <div className="text-xs text-gray-600">Откликов</div>
-                </div>
-                <div className="text-center p-3 bg-green-50 rounded-xl">
-                  <div className="text-2xl font-bold text-green-600">
-                    {worker.applications?.filter((a: any) => a.status === 'APPROVED').length || 0}
+        {filteredWorkers.map((worker, index) => {
+          const approvedCount = worker.applications?.filter((a: any) => a.status === 'APPROVED').length || 0;
+          const totalApplications = worker._count?.applications ?? (worker.applications?.length ?? 0);
+
+          return (
+            <div
+              key={worker.id}
+              className="bg-white rounded-2xl shadow-md border hover:shadow-xl transition-all animate-fadeIn"
+              style={{ animationDelay: `${index * 0.05}s` }}
+            >
+              <div className="h-2 bg-gradient-to-r from-blue-600 to-cyan-600"></div>
+              <div className="p-6">
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center text-2xl font-black text-white shadow-lg">
+                    {worker.fullName?.charAt(0).toUpperCase() || "?"}
                   </div>
-                  <div className="text-xs text-gray-600">Одобрено</div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-lg text-gray-900 truncate">{worker.fullName || "Без имени"}</h3>
+                    <p className="text-sm text-gray-600 truncate">{worker.email || "Нет email"}</p>
+                    <p className="text-sm text-gray-600">{worker.phone || "Телефон отсутствует"}</p>
+                  </div>
+                </div>
+                {worker.promoRegistration && worker.promoRegistration.promoCode && (
+                  <div className="mb-3 p-2 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="text-xs font-semibold text-green-600">Промокод</div>
+                    <div className="font-mono font-bold text-green-700 text-sm">{worker.promoRegistration.promoCode.code}</div>
+                  </div>
+                )}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="text-center p-3 bg-gray-50 rounded-xl">
+                    <div className="text-2xl font-bold text-gray-900">{totalApplications}</div>
+                    <div className="text-xs text-gray-600">Откликов</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-xl">
+                    <div className="text-2xl font-bold text-green-600">{approvedCount}</div>
+                    <div className="text-xs text-gray-600">Одобрено</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -20,22 +20,31 @@ export default function AdminManagers() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", fullName: "", phone: "" });
 
-  useEffect(() => {
-    loadManagers();
-  }, []);
-
+  // Загрузка данных менеджеров
   async function loadManagers() {
+    setLoading(true);
     try {
-      const data = await api("/users/managers");
+      const data = await api("/users/managers"); // API должен отдавать актуальные данные с количеством по промокодам и регистрациям
       setManagers(data);
     } catch (error) {
-      console.error(error);
+      console.error("Ошибка загрузки менеджеров:", error);
+      alert("Ошибка при загрузке данных менеджеров");
     } finally {
       setLoading(false);
     }
   }
 
+  // При монтировании компонента и при необходимости обновления подгружаем данные
+  useEffect(() => {
+    loadManagers();
+  }, []);
+
+  // Обработка создания нового менеджера
   async function handleCreate() {
+    if (!form.email || !form.password || !form.fullName) {
+      alert("Пожалуйста, заполните обязательные поля");
+      return;
+    }
     try {
       await api("/users/manager", {
         method: "POST",
@@ -43,12 +52,18 @@ export default function AdminManagers() {
       });
       setForm({ email: "", password: "", fullName: "", phone: "" });
       setShowForm(false);
-      loadManagers();
+      await loadManagers(); // Обновляем список менеджеров сразу после создания
       alert("✅ Менеджер создан!");
     } catch (error: any) {
-      alert("❌ " + error.message);
+      alert("❌ Ошибка создания менеджера: " + (error.message || "Неизвестная ошибка"));
     }
   }
+
+  // Можно добавить обновление через polling или WebSocket, если API поддерживает
+  // useEffect(() => {
+  //   const interval = setInterval(loadManagers, 30000); // Обновлять каждые 30 секунд
+  //   return () => clearInterval(interval);
+  // }, []);
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
@@ -82,6 +97,7 @@ export default function AdminManagers() {
               placeholder="ФИО"
               value={form.fullName}
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+              required
             />
             <input
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
@@ -95,6 +111,7 @@ export default function AdminManagers() {
               placeholder="Email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
             />
             <input
               type="password"
@@ -102,6 +119,7 @@ export default function AdminManagers() {
               placeholder="Пароль"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
             />
           </div>
           <button
