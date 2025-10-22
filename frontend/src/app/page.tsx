@@ -36,7 +36,7 @@ export default function Home() {
     {
       icon: "🚀",
       title: "Умный подбор вахт",
-      description: "AI-алгоритмы анализируют ваш опыт и подбирают идеальные вахты на основе уникальных данных",
+      description: "Мы будем анализировать ваш опыт и подбирать идеальные вахты на основе уникальных данных",
       gradient: "from-purple-600 to-fuchsia-700",
       bgGradient: "from-purple-50 to-fuchsia-100/50",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
@@ -45,7 +45,7 @@ export default function Home() {
 
   const comparisonData = [
     {
-      platform: "BOROVY",
+      platform: "Боровы",
       features: ["Персональная поддержка", "Гарантии безопасности", "Долгосрочные отношения", "Многоразовое устройство", "Проверенные агентства"],
       color: "from-blue-500 to-purple-600"
     },
@@ -60,7 +60,7 @@ export default function Home() {
     {
       icon: "✅",
       title: "Строгая проверка",
-      description: "Каждое рекрутинговое агентство проходит многоэтапную проверку"
+      description: "Каждое рекрутинговое агентство проходит проверку"
     },
     {
       icon: "🛡️",
@@ -68,23 +68,13 @@ export default function Home() {
       description: "Отсеиваем 98% сомнительных предложений"
     },
     {
-      icon: "💼",
-      title: "Гарантия трудоустройства",
-      description: "Получаем оплату только при вашем успешном трудоустройстве"
-    },
-    {
       icon: "🌍",
       title: "Разные сферы",
-      description: "От строительных вахт до работы в Японии"
+      description: "Мы предоставляем любые сферы вахтовых работ"
     }
   ];
 
-  const stats = [
-    { value: `${jobsCount}+`, label: "Проверенных вакансий", icon: "💼" },
-    { value: "150+", label: "Агентств-партнеров", icon: "🤝" },
-    { value: "10K+", label: "Успешных трудоустройств", icon: "🎉" },
-    { value: "98%", label: "Безопасных предложений", icon: "🛡️" }
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 overflow-x-hidden">
@@ -97,7 +87,7 @@ export default function Home() {
                 <span className="text-white font-bold text-xl">B</span>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                BOROVY
+                Боровы
               </span>
             </Link>
 
@@ -139,7 +129,7 @@ export default function Home() {
 
               {/* Main Heading */}
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
-                Боровы - не просто работа!
+                Боровы - не просто р
                 <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient">
 
                 </span>
@@ -147,8 +137,9 @@ export default function Home() {
 
               {/* Description */}
               <p className="text-lg sm:text-xl text-gray-600 leading-relaxed">
-                Мы строим долгосрочные отношения, а не просто находим разовую работу.
+                Мы строим долгосрочные отношения.
                 Ваша безопасность и карьерный рост — наш приоритет.
+                Мы на вашей стороне. Всегда.
               </p>
 
               {/* CTA Buttons */}
@@ -422,7 +413,7 @@ export default function Home() {
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center transform transition-transform duration-300 group-hover:scale-110">
                   <span className="text-white font-bold text-xl">B</span>
                 </div>
-                <span className="text-2xl font-bold">BOROVY</span>
+                <span className="text-2xl font-bold">Боровы</span>
               </div>
               <p className="text-gray-400 max-w-md leading-relaxed">
                 Экосистема для вахтовиков. Мы строим долгосрочные отношения, обеспечивая безопасность и карьерный рост.
@@ -444,9 +435,7 @@ export default function Home() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about" className="hover:text-white transition-colors duration-300 hover:translate-x-1 transform inline-block">
-                    О нас
-                  </Link>
+
                 </li>
               </ul>
             </div>
@@ -474,7 +463,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 BOROVY. Все права защищены. Сделано для вахтовиков с заботой</p>
+            <p>&copy; 2025 Боровы. Все права защищены. Сделано для вахтовиков с заботой</p>
           </div>
         </div>
       </footer>
