@@ -108,45 +108,73 @@ export default function AdminManagers() {
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-2xl shadow-xl border-2 border-red-200 p-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Новый менеджер</h3>
+        <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 p-6">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Создание нового менеджера</h3>
           <div className="grid md:grid-cols-2 gap-4">
-            <input
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
-              placeholder="ФИО"
-              value={form.fullName}
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-              required
-            />
-            <input
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
-              placeholder="Телефон"
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            />
-            <input
-              type="email"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
-              placeholder="Email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
-            />
-            <input
-              type="password"
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none"
-              placeholder="Пароль"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                ФИО <span className="text-red-500">*</span>
+              </label>
+              <input
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white text-gray-900"
+                placeholder="Введите ФИО"
+                value={form.fullName}
+                onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Телефон
+              </label>
+              <input
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white text-gray-900"
+                placeholder="+7 (XXX) XXX-XX-XX"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white text-gray-900"
+                placeholder="email@example.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Пароль <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="password"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white text-gray-900"
+                placeholder="Минимум 6 символов"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                required
+              />
+            </div>
           </div>
-          <button
-            onClick={handleCreate}
-            className="w-full mt-4 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
-          >
-            Создать менеджера
-          </button>
+          <div className="flex gap-3 mt-6">
+            <button
+              onClick={handleCreate}
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
+            >
+              Создать менеджера
+            </button>
+            <button
+              onClick={() => setShowForm(false)}
+              className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+            >
+              Отмена
+            </button>
+          </div>
         </div>
       )}
 
