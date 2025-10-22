@@ -67,6 +67,15 @@ export declare class UsersController {
             fullName: string;
         };
     }>;
+    deleteManager(id: string): Promise<{
+        message: string;
+        deletedManager: {
+            id: string;
+            email: string;
+            fullName: string;
+        };
+        deletedPromoCodes: number;
+    }>;
     getManagerWorkers(user: any): Promise<{
         id: string;
         email: string;

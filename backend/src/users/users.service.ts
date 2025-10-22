@@ -75,6 +75,62 @@ export class UsersService {
     deletedWorker
   };
 }
+async deleteManager(managerId: string) {
+  // Проверяем, существует ли пользователь и является ли он менеджером
+  const manager = await this.prisma.user.findUnique({
+    where: { id: managerId },
+    select: { id: true, role: true, email: true }
+  });
+
+  if (!manager) {
+    throw new NotFoundException('Пользователь не найден');
+  }
+
+  if (manager.role !== 'MANAGER') {
+    throw new ConflictException('Можно удалять только менеджеров');
+  }
+
+  // Сначала находим все промокоды, созданные этим менеджером
+  const managerPromoCodes = await this.prisma.promoCode.findMany({
+    where: { createdBy: managerId },
+    select: { id: true }
+  });
+
+  const promoCodeIds = managerPromoCodes.map(pc => pc.id);
+
+  // Если у менеджера есть созданные промокоды, нужно обработать связанные регистрации
+  if (promoCodeIds.length > 0) {
+    // Удаляем регистрации, связанные с промокодами менеджера
+    await this.prisma.promoRegistration.deleteMany({
+      where: {
+        promoCodeId: { in: promoCodeIds }
+      }
+    });
+
+    // Удаляем сами промокоды менеджера
+    await this.prisma.promoCode.deleteMany({
+      where: { createdBy: managerId }
+    });
+  }
+
+  // Удаляем менеджера - каскадное удаление автоматически удалит:
+  // - Его регистрацию по промокоду (если есть)
+  // - Его отклики на вакансии (если есть)
+  const deletedManager = await this.prisma.user.delete({
+    where: { id: managerId },
+    select: {
+      id: true,
+      email: true,
+      fullName: true
+    }
+  });
+
+  return {
+    message: 'Менеджер успешно удален',
+    deletedManager,
+    deletedPromoCodes: promoCodeIds.length
+  };
+}
 
   async createManager(dto: CreateManagerDto) {
     const existing = await this.prisma.user.findUnique({

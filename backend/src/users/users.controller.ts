@@ -49,6 +49,12 @@ export class UsersController {
 async deleteWorker(@Param('id') id: string) {
   return this.usersService.deleteWorker(id);
 }
+@Delete('manager/:id')
+@Roles('ADMIN')
+@UseGuards(RolesGuard)
+async deleteManager(@Param('id') id: string) {
+  return this.usersService.deleteManager(id);
+}
 
   @Get('manager/workers')
   @Roles('MANAGER')

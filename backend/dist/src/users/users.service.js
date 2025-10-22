@@ -75,6 +75,46 @@ let UsersService = class UsersService {
             deletedWorker
         };
     }
+    async deleteManager(managerId) {
+        const manager = await this.prisma.user.findUnique({
+            where: { id: managerId },
+            select: { id: true, role: true, email: true }
+        });
+        if (!manager) {
+            throw new common_1.NotFoundException('Пользователь не найден');
+        }
+        if (manager.role !== 'MANAGER') {
+            throw new common_1.ConflictException('Можно удалять только менеджеров');
+        }
+        const managerPromoCodes = await this.prisma.promoCode.findMany({
+            where: { createdBy: managerId },
+            select: { id: true }
+        });
+        const promoCodeIds = managerPromoCodes.map(pc => pc.id);
+        if (promoCodeIds.length > 0) {
+            await this.prisma.promoRegistration.deleteMany({
+                where: {
+                    promoCodeId: { in: promoCodeIds }
+                }
+            });
+            await this.prisma.promoCode.deleteMany({
+                where: { createdBy: managerId }
+            });
+        }
+        const deletedManager = await this.prisma.user.delete({
+            where: { id: managerId },
+            select: {
+                id: true,
+                email: true,
+                fullName: true
+            }
+        });
+        return {
+            message: 'Менеджер успешно удален',
+            deletedManager,
+            deletedPromoCodes: promoCodeIds.length
+        };
+    }
     async createManager(dto) {
         const existing = await this.prisma.user.findUnique({
             where: { email: dto.email },

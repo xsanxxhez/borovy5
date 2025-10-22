@@ -43,6 +43,9 @@ let UsersController = class UsersController {
     async deleteWorker(id) {
         return this.usersService.deleteWorker(id);
     }
+    async deleteManager(id) {
+        return this.usersService.deleteManager(id);
+    }
     async getManagerWorkers(user) {
         return this.usersService.getManagerWorkers(user.id);
     }
@@ -97,6 +100,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteWorker", null);
+__decorate([
+    (0, common_1.Delete)('manager/:id'),
+    (0, roles_decorator_1.Roles)('ADMIN'),
+    (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "deleteManager", null);
 __decorate([
     (0, common_1.Get)('manager/workers'),
     (0, roles_decorator_1.Roles)('MANAGER'),

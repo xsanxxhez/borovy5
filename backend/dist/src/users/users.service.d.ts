@@ -31,6 +31,15 @@ export declare class UsersService {
             fullName: string;
         };
     }>;
+    deleteManager(managerId: string): Promise<{
+        message: string;
+        deletedManager: {
+            id: string;
+            email: string;
+            fullName: string;
+        };
+        deletedPromoCodes: number;
+    }>;
     createManager(dto: CreateManagerDto): Promise<{
         id: string;
         email: string;

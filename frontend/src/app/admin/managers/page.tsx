@@ -19,12 +19,13 @@ export default function AdminManagers() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", fullName: "", phone: "" });
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Загрузка данных менеджеров
   async function loadManagers() {
     setLoading(true);
     try {
-      const data = await api("/users/managers"); // API должен отдавать актуальные данные с количеством по промокодам и регистрациям
+      const data = await api("/users/managers");
       setManagers(data);
     } catch (error) {
       console.error("Ошибка загрузки менеджеров:", error);
@@ -52,18 +53,36 @@ export default function AdminManagers() {
       });
       setForm({ email: "", password: "", fullName: "", phone: "" });
       setShowForm(false);
-      await loadManagers(); // Обновляем список менеджеров сразу после создания
+      await loadManagers();
       alert("✅ Менеджер создан!");
     } catch (error: any) {
       alert("❌ Ошибка создания менеджера: " + (error.message || "Неизвестная ошибка"));
     }
   }
 
-  // Можно добавить обновление через polling или WebSocket, если API поддерживает
-  // useEffect(() => {
-  //   const interval = setInterval(loadManagers, 30000); // Обновлять каждые 30 секунд
-  //   return () => clearInterval(interval);
-  // }, []);
+  // Обработка удаления менеджера
+  async function handleDeleteManager(managerId: string, managerName: string) {
+    if (!confirm(`Вы уверены, что хотите удалить менеджера "${managerName}"?\n\nЭто действие также удалит все созданные им промокоды и связанные данные.`)) {
+      return;
+    }
+
+    setDeletingId(managerId);
+    try {
+      await api(`/users/manager/${managerId}`, {
+        method: "DELETE"
+      });
+
+      // Удаляем из локального состояния
+      setManagers(managers.filter(m => m.id !== managerId));
+
+      alert("✅ Менеджер успешно удален");
+    } catch (error: any) {
+      console.error("Ошибка удаления:", error);
+      alert("❌ Ошибка при удалении менеджера: " + (error?.message || "Неизвестная ошибка"));
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[60vh]">
@@ -135,9 +154,25 @@ export default function AdminManagers() {
         {managers.map((manager, index) => (
           <div
             key={manager.id}
-            className="bg-white rounded-2xl shadow-md border hover:shadow-xl transition-all animate-fadeIn"
+            className="bg-white rounded-2xl shadow-md border hover:shadow-xl transition-all animate-fadeIn relative"
             style={{ animationDelay: `${index * 0.05}s` }}
           >
+            {/* Кнопка удаления */}
+            <button
+              onClick={() => handleDeleteManager(manager.id, manager.fullName)}
+              disabled={deletingId === manager.id}
+              className="absolute top-4 right-4 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 z-10"
+              title="Удалить менеджера"
+            >
+              {deletingId === manager.id ? (
+                <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              )}
+            </button>
+
             <div className="h-2 bg-gradient-to-r from-purple-600 to-pink-600"></div>
             <div className="p-6">
               <div className="flex items-start gap-4 mb-4">
@@ -147,7 +182,7 @@ export default function AdminManagers() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-lg text-gray-900 truncate">{manager.fullName}</h3>
                   <p className="text-sm text-gray-600 truncate">{manager.email}</p>
-                  <p className="text-sm text-gray-600">{manager.phone}</p>
+                  <p className="text-sm text-gray-600">{manager.phone || "Телефон не указан"}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -160,6 +195,15 @@ export default function AdminManagers() {
                   <div className="text-xs text-gray-600">Регистраций</div>
                 </div>
               </div>
+
+              {/* Предупреждение если есть промокоды */}
+              {(manager._count?.promoCodes || 0) > 0 && (
+                <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="text-xs font-semibold text-yellow-700">
+                    ⚠️ Удаление также удалит {manager._count.promoCodes} промокод(ов)
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ))}
