@@ -1,13 +1,14 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Delete,
-  Patch,
-  Body, 
-  Param, 
-  UseGuards,
-  Query,
+import {
+  Controller,
+Get,
+Post,
+Delete,
+Patch,
+Put,
+Body,
+Param,
+UseGuards,
+Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { PromoCodesService } from './promo-codes.service';
@@ -16,11 +17,12 @@ import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { CreatePromoCodeDto } from './dto/create-promo-code.dto';
+import { UpdatePromoCodeDto } from './dto/update-promo-code.dto';
 
 @ApiTags('promo-codes')
 @Controller('promo-codes')
 export class PromoCodesController {
-  constructor(private promoCodesService: PromoCodesService) {}
+constructor(private promoCodesService: PromoCodesService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -69,8 +71,17 @@ export class PromoCodesController {
   @Roles('ADMIN', 'MANAGER')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Переключить активность промокода (менеджер и админ)' })
-  toggleActive(@Param('id') id: string) {
-    return this.promoCodesService.toggleActive(id);
+  toggleActive(@Param('id') id: string, @CurrentUser() user: any) {
+    return this.promoCodesService.toggleActive(id, user.id);
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'MANAGER')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Обновить промокод (менеджер и админ)' })
+  update(@Param('id') id: string, @CurrentUser() user: any, @Body() dto: UpdatePromoCodeDto) {
+    return this.promoCodesService.update(id, user.id, dto);
   }
 
   @Delete(':id')
