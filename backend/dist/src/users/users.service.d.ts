@@ -23,6 +23,14 @@ export declare class UsersService {
         bio: string;
         avatar: string;
     }>;
+    deleteWorker(userId: string): Promise<{
+        message: string;
+        deletedWorker: {
+            id: string;
+            email: string;
+            fullName: string;
+        };
+    }>;
     createManager(dto: CreateManagerDto): Promise<{
         id: string;
         email: string;
@@ -73,13 +81,13 @@ export declare class UsersService {
         };
         applications: {
             id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
             job: {
+                title: string;
                 enterprise: {
                     name: string;
                 };
-                title: string;
             };
-            status: import(".prisma/client").$Enums.ApplicationStatus;
         }[];
     }[]>;
 }

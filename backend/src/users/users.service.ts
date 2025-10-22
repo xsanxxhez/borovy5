@@ -44,6 +44,38 @@ export class UsersService {
     });
   }
 
+
+  async deleteWorker(userId: string) {
+  // Проверяем, существует ли пользователь и является ли он работником
+  const worker = await this.prisma.user.findUnique({
+    where: { id: userId },
+    select: { id: true, role: true, email: true }
+  });
+
+  if (!worker) {
+    throw new NotFoundException('Пользователь не найден');
+  }
+
+  if (worker.role !== 'WORKER') {
+    throw new ConflictException('Можно удалять только работников');
+  }
+
+  // Удаляем пользователя - каскадное удаление автоматически удалит связанные записи
+  const deletedWorker = await this.prisma.user.delete({
+    where: { id: userId },
+    select: {
+      id: true,
+      email: true,
+      fullName: true
+    }
+  });
+
+  return {
+    message: 'Работник успешно удален',
+    deletedWorker
+  };
+}
+
   async createManager(dto: CreateManagerDto) {
     const existing = await this.prisma.user.findUnique({
       where: { email: dto.email },

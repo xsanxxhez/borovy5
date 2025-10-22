@@ -33,7 +33,7 @@ export default function Login() {
         {/* LOGO */}
         <Link href="/" className="flex items-center justify-center gap-2 mb-8">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-2xl">B</span>
+            <span className="text-white font-bold text-2xl">Б</span>
           </div>
           <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Боровы</span>
         </Link>

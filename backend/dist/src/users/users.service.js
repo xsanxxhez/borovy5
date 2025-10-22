@@ -51,6 +51,30 @@ let UsersService = class UsersService {
             },
         });
     }
+    async deleteWorker(userId) {
+        const worker = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, role: true, email: true }
+        });
+        if (!worker) {
+            throw new common_1.NotFoundException('Пользователь не найден');
+        }
+        if (worker.role !== 'WORKER') {
+            throw new common_1.ConflictException('Можно удалять только работников');
+        }
+        const deletedWorker = await this.prisma.user.delete({
+            where: { id: userId },
+            select: {
+                id: true,
+                email: true,
+                fullName: true
+            }
+        });
+        return {
+            message: 'Работник успешно удален',
+            deletedWorker
+        };
+    }
     async createManager(dto) {
         const existing = await this.prisma.user.findUnique({
             where: { email: dto.email },

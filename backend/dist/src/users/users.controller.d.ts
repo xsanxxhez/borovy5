@@ -59,6 +59,14 @@ export declare class UsersController {
             };
         };
     }[]>;
+    deleteWorker(id: string): Promise<{
+        message: string;
+        deletedWorker: {
+            id: string;
+            email: string;
+            fullName: string;
+        };
+    }>;
     getManagerWorkers(user: any): Promise<{
         id: string;
         email: string;
@@ -73,13 +81,13 @@ export declare class UsersController {
         };
         applications: {
             id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
             job: {
+                title: string;
                 enterprise: {
                     name: string;
                 };
-                title: string;
             };
-            status: import(".prisma/client").$Enums.ApplicationStatus;
         }[];
     }[]>;
 }
