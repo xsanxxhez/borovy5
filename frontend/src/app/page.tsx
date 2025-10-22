@@ -314,23 +314,23 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">
-                  Наша бизнес-модель — ваша защита
+                  Ваш успех — наш главный приоритет
                 </h3>
                 <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
-                  <strong className="text-blue-700">Мы зарабатываем, когда вы успешно работаете.</strong> Это мотивирует нас находить для вас лучшие вахты и обеспечивать долгосрочные отношения.
+                  <strong className="text-blue-700">Мы создаем условия для вашего профессионального роста и стабильности.</strong> Каждая вахта — это новый этап в вашей карьере с перспективой долгосрочного развития.
                 </p>
                 <ul className="space-y-3 sm:space-y-4">
                   <li className="flex items-center gap-3 backdrop-blur-sm bg-white/50 p-3 sm:p-4 rounded-xl border border-blue-100">
                     <span className="w-2 h-2 bg-green-500 rounded-full shadow-lg shadow-green-500/50 flex-shrink-0"></span>
-                    <span className="text-gray-700 text-sm sm:text-base">Доход только при вашем успешном трудоустройстве</span>
+                    <span className="text-gray-700 text-sm sm:text-base">Гарантированное трудоустройство с полным пакетом документов</span>
                   </li>
                   <li className="flex items-center gap-3 backdrop-blur-sm bg-white/50 p-3 sm:p-4 rounded-xl border border-blue-100">
                     <span className="w-2 h-2 bg-green-500 rounded-full shadow-lg shadow-green-500/50 flex-shrink-0"></span>
-                    <span className="text-gray-700 text-sm sm:text-base">Постоянная поддержка на всех этапах работы</span>
+                    <span className="text-gray-700 text-sm sm:text-base">Комфортные условия работы и проживания</span>
                   </li>
                   <li className="flex items-center gap-3 backdrop-blur-sm bg-white/50 p-3 sm:p-4 rounded-xl border border-blue-100">
                     <span className="w-2 h-2 bg-green-500 rounded-full shadow-lg shadow-green-500/50 flex-shrink-0"></span>
-                    <span className="text-gray-700 text-sm sm:text-base">Заинтересованность в вашем карьерном росте</span>
+                    <span className="text-gray-700 text-sm sm:text-base">Перспектива карьерного advancement и повышения квалификации</span>
                   </li>
                 </ul>
               </div>
@@ -361,7 +361,7 @@ export default function Home() {
                 </span>
               </h2>
               <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
-                Мы собираем детальную информацию о каждом специалисте и его опыте.
+                Мы — технологическая компания, использующая алгоритмы для поиска работников! Мы собираем детальную информацию о каждом специалисте и его опыте.
                 В будущем это позволит создать AI-алгоритмы подбора вахт, которые не сможет повторить никто другой.
               </p>
 
