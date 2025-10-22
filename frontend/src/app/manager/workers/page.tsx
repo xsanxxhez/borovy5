@@ -23,9 +23,9 @@ export default function ManagerWorkers() {
     }
   }
 
-  const filteredWorkers = workers.filter(worker => 
-    worker.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    worker.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredWorkers = workers.filter(worker =>
+    worker.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    worker.email?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (loading) return (
@@ -54,7 +54,7 @@ export default function ManagerWorkers() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Поиск по имени или email..."
-            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors"
+            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none bg-white text-gray-900 transition-colors"
           />
           <svg className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -74,16 +74,16 @@ export default function ManagerWorkers() {
             <div className="p-6">
               <div className="flex items-start gap-4 mb-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-2xl font-black text-white shadow-lg flex-shrink-0">
-                  {worker.fullName.charAt(0)}
+                  {worker.fullName?.charAt(0) || "?"}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-lg text-gray-900 truncate">{worker.fullName}</h3>
-                  <p className="text-sm text-gray-600 truncate">{worker.email}</p>
-                  <p className="text-sm text-gray-600">{worker.phone}</p>
+                  <h3 className="font-bold text-lg text-gray-900 truncate">{worker.fullName || "Без имени"}</h3>
+                  <p className="text-sm text-gray-600 truncate">{worker.email || "Нет email"}</p>
+                  <p className="text-sm text-gray-600">{worker.phone || "Телефон отсутствует"}</p>
                 </div>
               </div>
 
-              {worker.promoRegistration && (
+              {worker.promoRegistration && worker.promoRegistration.promoCode && (
                 <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-xl">
                   <div className="text-xs font-semibold text-purple-600 mb-1">Промокод</div>
                   <div className="font-mono font-bold text-purple-700">{worker.promoRegistration.promoCode.code}</div>
@@ -92,7 +92,7 @@ export default function ManagerWorkers() {
 
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="text-center p-3 bg-gray-50 rounded-xl">
-                  <div className="text-2xl font-bold text-gray-900">{worker._count?.applications || 0}</div>
+                  <div className="text-2xl font-bold text-gray-900">{worker.applications?.length || 0}</div>
                   <div className="text-xs text-gray-600">Откликов</div>
                 </div>
                 <div className="text-center p-3 bg-green-50 rounded-xl">

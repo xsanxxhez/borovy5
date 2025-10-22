@@ -8,6 +8,7 @@ export default function ManagerPromocodes() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ code: "", description: "" });
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     loadPromoCodes();
@@ -25,6 +26,12 @@ export default function ManagerPromocodes() {
   }
 
   async function handleCreate() {
+    if (!form.code.trim()) {
+      alert("Пожалуйста, введите код промокода");
+      return;
+    }
+
+    setCreating(true);
     try {
       await api("/promo-codes", {
         method: "POST",
@@ -32,17 +39,19 @@ export default function ManagerPromocodes() {
       });
       setForm({ code: "", description: "" });
       setShowForm(false);
-      loadPromoCodes();
+      await loadPromoCodes();
       alert("✅ Промокод создан!");
     } catch (error: any) {
       alert("❌ " + error.message);
+    } finally {
+      setCreating(false);
     }
   }
 
   async function toggleActive(id: string) {
     try {
-      await api(`/promo-codes/${id}/toggle`, { method: "PATCH" });
-      loadPromoCodes();
+      await api(`/promo-codes/${id}/toggle-active`, { method: "PATCH" });
+      await loadPromoCodes();
     } catch (error: any) {
       alert(error.message);
     }
@@ -75,33 +84,53 @@ export default function ManagerPromocodes() {
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-2xl shadow-xl border-2 border-purple-200 p-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Новый промокод</h3>
+        <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 p-6">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Создание нового промокода</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Код промокода</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Код промокода <span className="text-red-500">*</span>
+              </label>
               <input
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors font-mono text-lg uppercase"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none bg-white text-gray-900 transition-colors font-mono text-lg uppercase"
                 placeholder="VAHTA2025"
                 value={form.code}
                 onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Описание</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Описание
+              </label>
               <input
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none bg-white text-gray-900 transition-colors"
                 placeholder="Для зимней вахты 2025"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
               />
             </div>
-            <button
-              onClick={handleCreate}
-              className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all"
-            >
-              Создать промокод
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={handleCreate}
+                disabled={creating}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transition-all disabled:opacity-50"
+              >
+                {creating ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Создание...
+                  </div>
+                ) : (
+                  "Создать промокод"
+                )}
+              </button>
+              <button
+                onClick={() => setShowForm(false)}
+                className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+              >
+                Отмена
+              </button>
+            </div>
           </div>
         </div>
       )}
