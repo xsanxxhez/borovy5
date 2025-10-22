@@ -162,25 +162,46 @@ async deleteManager(managerId: string) {
   }
 
   async getAllManagers() {
-    return this.prisma.user.findMany({
-      where: { role: 'MANAGER' },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        phone: true,
-        createdAt: true,
-        promoCodes: {
-          select: {
-            id: true,
-            code: true,
-            usedCount: true,
-            isActive: true,
+  const managers = await this.prisma.user.findMany({
+    where: { role: 'MANAGER' },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      phone: true,
+      createdAt: true,
+      promoCodes: {
+        select: {
+          id: true,
+          code: true,
+          usedCount: true,
+          isActive: true,
+          _count: {
+            select: {
+              registrations: true,
+            },
           },
         },
       },
-    });
-  }
+    },
+  });
+
+  // Преобразуем данные чтобы включить общее количество регистраций
+  return managers.map(manager => {
+    const totalRegistrations = manager.promoCodes.reduce(
+      (sum, promo) => sum + promo._count.registrations,
+      0
+    );
+
+    return {
+      ...manager,
+      _count: {
+        promoCodes: manager.promoCodes.length,
+        registrations: totalRegistrations,
+      },
+    };
+  });
+}
 
   async getAllWorkers() {
     return this.prisma.user.findMany({

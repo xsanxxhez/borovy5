@@ -8,6 +8,7 @@ interface Manager {
   email: string;
   fullName: string;
   phone: string;
+  promoCodes: any[];
   _count: {
     promoCodes: number;
     registrations: number;
@@ -215,17 +216,17 @@ export default function AdminManagers() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="text-center p-3 bg-purple-50 rounded-xl">
-                  <div className="text-2xl font-bold text-purple-600">{manager._count?.promoCodes || 0}</div>
+                  <div className="text-2xl font-bold text-purple-600">{manager._count.promoCodes}</div>
                   <div className="text-xs text-gray-600">Промокодов</div>
                 </div>
                 <div className="text-center p-3 bg-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-blue-600">{manager._count?.registrations || 0}</div>
+                  <div className="text-2xl font-bold text-blue-600">{manager._count.registrations}</div>
                   <div className="text-xs text-gray-600">Регистраций</div>
                 </div>
               </div>
 
               {/* Предупреждение если есть промокоды */}
-              {(manager._count?.promoCodes || 0) > 0 && (
+              {manager._count.promoCodes > 0 && (
                 <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <div className="text-xs font-semibold text-yellow-700">
                     ⚠️ Удаление также удалит {manager._count.promoCodes} промокод(ов)
