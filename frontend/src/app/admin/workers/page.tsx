@@ -3,8 +3,39 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+interface Worker {
+  id: string;
+  email: string;
+  fullName: string;
+  phone: string;
+  createdAt: string;
+  applications: Array<{
+    id: string;
+    status: string;
+    appliedAt: string;
+    job: {
+      title: string;
+      enterprise: {
+        name: string;
+      };
+    };
+  }>;
+  _count: {
+    applications: number;
+  };
+  promoRegistration?: {
+    promoCode: {
+      code: string;
+      creator: {
+        fullName: string;
+        email: string;
+      };
+    };
+  };
+}
+
 export default function AdminWorkers() {
-  const [workers, setWorkers] = useState<any[]>([]);
+  const [workers, setWorkers] = useState<Worker[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -84,8 +115,8 @@ export default function AdminWorkers() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredWorkers.map((worker, index) => {
-          const approvedCount = worker.applications?.filter((a: any) => a.status === 'APPROVED').length || 0;
-          const totalApplications = worker._count?.applications ?? (worker.applications?.length ?? 0);
+          const approvedCount = worker.applications?.filter((a) => a.status === 'APPROVED').length || 0;
+          const totalApplications = worker._count?.applications || 0;
 
           return (
             <div

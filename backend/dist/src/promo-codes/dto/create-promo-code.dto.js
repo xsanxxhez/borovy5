@@ -16,14 +16,29 @@ class CreatePromoCodeDto {
 }
 exports.CreatePromoCodeDto = CreatePromoCodeDto;
 __decorate([
-    (0, swagger_1.ApiProperty)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'Уникальный код промокода',
+        example: 'SUMMER2024',
+        minLength: 3,
+        maxLength: 20
+    }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(3, { message: 'Код промокода должен содержать минимум 3 символа' }),
+    (0, class_validator_1.MaxLength)(20, { message: 'Код промокода не должен превышать 20 символов' }),
+    (0, class_validator_1.Matches)(/^[A-Z0-9_]+$/, {
+        message: 'Код промокода может содержать только заглавные буквы, цифры и символ подчеркивания'
+    }),
     __metadata("design:type", String)
 ], CreatePromoCodeDto.prototype, "code", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)(),
+    (0, swagger_1.ApiPropertyOptional)({
+        description: 'Описание промокода',
+        example: 'Промокод для летней акции 2024',
+        maxLength: 255
+    }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.MaxLength)(255, { message: 'Описание не должно превышать 255 символов' }),
     __metadata("design:type", String)
 ], CreatePromoCodeDto.prototype, "description", void 0);
 //# sourceMappingURL=create-promo-code.dto.js.map

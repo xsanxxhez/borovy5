@@ -141,7 +141,7 @@ let UsersService = class UsersService {
         });
     }
     async getAllManagers() {
-        return this.prisma.user.findMany({
+        const managers = await this.prisma.user.findMany({
             where: { role: 'MANAGER' },
             select: {
                 id: true,
@@ -155,9 +155,24 @@ let UsersService = class UsersService {
                         code: true,
                         usedCount: true,
                         isActive: true,
+                        _count: {
+                            select: {
+                                registrations: true,
+                            },
+                        },
                     },
                 },
             },
+        });
+        return managers.map(manager => {
+            const totalRegistrations = manager.promoCodes.reduce((sum, promo) => sum + promo._count.registrations, 0);
+            return {
+                ...manager,
+                _count: {
+                    promoCodes: manager.promoCodes.length,
+                    registrations: totalRegistrations,
+                },
+            };
         });
     }
     async getAllWorkers() {
@@ -182,6 +197,28 @@ let UsersService = class UsersService {
                                 },
                             },
                         },
+                    },
+                },
+                applications: {
+                    select: {
+                        id: true,
+                        status: true,
+                        appliedAt: true,
+                        job: {
+                            select: {
+                                title: true,
+                                enterprise: {
+                                    select: {
+                                        name: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                _count: {
+                    select: {
+                        applications: true,
                     },
                 },
             },

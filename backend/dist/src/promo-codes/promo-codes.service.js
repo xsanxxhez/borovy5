@@ -106,17 +106,60 @@ let PromoCodesService = class PromoCodesService {
         }
         return promoCode;
     }
-    async toggleActive(id) {
+    async toggleActive(id, userId) {
         const promoCode = await this.prisma.promoCode.findUnique({
             where: { id },
         });
         if (!promoCode) {
             throw new common_1.BadRequestException('Промокод не найден');
         }
+        if (promoCode.createdBy !== userId) {
+            throw new common_1.ForbiddenException('Вы можете изменять только свои промокоды');
+        }
         return this.prisma.promoCode.update({
             where: { id },
             data: {
                 isActive: !promoCode.isActive,
+            },
+        });
+    }
+    async update(id, userId, dto) {
+        const promoCode = await this.prisma.promoCode.findUnique({
+            where: { id },
+        });
+        if (!promoCode) {
+            throw new common_1.BadRequestException('Промокод не найден');
+        }
+        if (promoCode.createdBy !== userId) {
+            throw new common_1.ForbiddenException('Вы можете редактировать только свои промокоды');
+        }
+        if (dto.code && dto.code !== promoCode.code) {
+            const existingPromoCode = await this.prisma.promoCode.findUnique({
+                where: { code: dto.code },
+            });
+            if (existingPromoCode) {
+                throw new common_1.BadRequestException('Промокод с таким названием уже существует');
+            }
+        }
+        return this.prisma.promoCode.update({
+            where: { id },
+            data: {
+                code: dto.code,
+                description: dto.description,
+            },
+            include: {
+                creator: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        email: true,
+                    },
+                },
+                _count: {
+                    select: {
+                        registrations: true,
+                    },
+                },
             },
         });
     }
@@ -126,6 +169,15 @@ let PromoCodesService = class PromoCodesService {
         });
         if (!promoCode) {
             throw new common_1.BadRequestException('Промокод не найден');
+        }
+        if (promoCode.createdBy !== userId) {
+            throw new common_1.ForbiddenException('Вы можете удалять только свои промокоды');
+        }
+        const registrationsCount = await this.prisma.promoRegistration.count({
+            where: { promoCodeId: id },
+        });
+        if (registrationsCount > 0) {
+            throw new common_1.BadRequestException('Нельзя удалить промокод, по которому есть регистрации');
         }
         return this.prisma.promoCode.delete({
             where: { id },

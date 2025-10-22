@@ -204,33 +204,54 @@ async deleteManager(managerId: string) {
 }
 
   async getAllWorkers() {
-    return this.prisma.user.findMany({
-      where: { role: 'WORKER' },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        phone: true,
-        createdAt: true,
-        promoRegistration: {
-          select: {
-            promoCode: {
-              select: {
-                code: true,
-                creator: {
-                  select: {
-                    fullName: true,
-                    email: true,
-                  },
+  return this.prisma.user.findMany({
+    where: { role: 'WORKER' },
+    select: {
+      id: true,
+      email: true,
+      fullName: true,
+      phone: true,
+      createdAt: true,
+      promoRegistration: {
+        select: {
+          promoCode: {
+            select: {
+              code: true,
+              creator: {
+                select: {
+                  fullName: true,
+                  email: true,
                 },
               },
             },
           },
         },
       },
-    });
-  }
-
+      applications: {
+        select: {
+          id: true,
+          status: true,
+          appliedAt: true,
+          job: {
+            select: {
+              title: true,
+              enterprise: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          applications: true,
+        },
+      },
+    },
+  });
+}
   async getManagerWorkers(managerId: string) {
     const promoCodes = await this.prisma.promoCode.findMany({
       where: { createdBy: managerId },

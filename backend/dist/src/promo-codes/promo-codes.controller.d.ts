@@ -1,5 +1,6 @@
 import { PromoCodesService } from './promo-codes.service';
 import { CreatePromoCodeDto } from './dto/create-promo-code.dto';
+import { UpdatePromoCodeDto } from './dto/update-promo-code.dto';
 export declare class PromoCodesController {
     private promoCodesService;
     constructor(promoCodesService: PromoCodesService);
@@ -11,12 +12,12 @@ export declare class PromoCodesController {
         };
     } & {
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
     }>;
     findAll(): Promise<({
         creator: {
@@ -30,12 +31,12 @@ export declare class PromoCodesController {
         };
     } & {
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
     })[]>;
     findMyPromoCodes(user: any): Promise<({
         _count: {
@@ -43,12 +44,12 @@ export declare class PromoCodesController {
         };
     } & {
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
     })[]>;
     validatePromoCode(code: string): Promise<{
         valid: boolean;
@@ -57,21 +58,21 @@ export declare class PromoCodesController {
         valid: boolean;
         promoCode: {
             id: string;
-            createdAt: Date;
             code: string;
             description: string | null;
             isActive: boolean;
-            createdBy: string;
+            createdAt: Date;
             usedCount: number;
+            createdBy: string;
         };
     }>;
     getPromoCodeStats(id: string): Promise<{
         registrations: ({
             user: {
                 id: string;
+                createdAt: Date;
                 email: string;
                 fullName: string;
-                createdAt: Date;
                 _count: {
                     applications: number;
                 };
@@ -84,29 +85,47 @@ export declare class PromoCodesController {
         })[];
     } & {
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
     }>;
-    toggleActive(id: string): Promise<{
+    toggleActive(id: string, user: any): Promise<{
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
+    }>;
+    update(id: string, user: any, dto: UpdatePromoCodeDto): Promise<{
+        creator: {
+            id: string;
+            email: string;
+            fullName: string;
+        };
+        _count: {
+            registrations: number;
+        };
+    } & {
+        id: string;
+        code: string;
+        description: string | null;
+        isActive: boolean;
+        createdAt: Date;
+        usedCount: number;
+        createdBy: string;
     }>;
     delete(id: string, user: any): Promise<{
         id: string;
-        createdAt: Date;
         code: string;
         description: string | null;
         isActive: boolean;
-        createdBy: string;
+        createdAt: Date;
         usedCount: number;
+        createdBy: string;
     }>;
 }

@@ -48,6 +48,10 @@ export declare class UsersService {
         role: import(".prisma/client").$Enums.Role;
     }>;
     getAllManagers(): Promise<{
+        _count: {
+            promoCodes: number;
+            registrations: number;
+        };
         id: string;
         email: string;
         fullName: string;
@@ -55,6 +59,9 @@ export declare class UsersService {
         createdAt: Date;
         promoCodes: {
             id: string;
+            _count: {
+                registrations: number;
+            };
             code: string;
             isActive: boolean;
             usedCount: number;
@@ -74,6 +81,20 @@ export declare class UsersService {
                     fullName: string;
                 };
             };
+        };
+        applications: {
+            id: string;
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
+            job: {
+                title: string;
+                enterprise: {
+                    name: string;
+                };
+            };
+        }[];
+        _count: {
+            applications: number;
         };
     }[]>;
     getManagerWorkers(managerId: string): Promise<{
