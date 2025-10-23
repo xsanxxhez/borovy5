@@ -3,9 +3,42 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+// Добавьте интерфейс для типизации
+interface Job {
+  id: string;
+  title: string;
+  description: string;
+  requirements: string;
+  salaryMin: number;
+  salaryMax: number;
+  workConditions: string;
+  location: string;
+  isActive: boolean;
+  createdAt: string;
+  enterprise?: {
+    id: string;
+    name: string;
+  };
+  _count?: {
+    applications: number;
+  };
+  applications?: Array<{
+    id: string;
+    status: string;
+  }>;
+}
+
+interface Enterprise {
+  id: string;
+  name: string;
+  description?: string;
+  industry?: string;
+}
+
 export default function AdminJobs() {
-  const [jobs, setJobs] = useState([]);
-  const [enterprises, setEnterprises] = useState([]);
+  // ТИПИЗИРУЙТЕ useState
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
