@@ -79,6 +79,20 @@ export default function AdminEnterprises() {
       alert(error.message);
     }
   }
+  // Добавьте эту функцию после функции toggleActive
+  async function handleDeleteEnterprise(id: string) {
+    if (!confirm("Вы уверены, что хотите удалить это предприятие? Все связанные вакансии также будут удалены.")) {
+      return;
+    }
+
+    try {
+      await api(`/enterprises/${id}`, { method: "DELETE" });
+      loadEnterprises();
+      alert("✅ Предприятие удалено!");
+    } catch (error: any) {
+      alert("❌ " + error.message);
+    }
+  }
 
   async function toggleJobActive(jobId: string) {
     try {
@@ -215,6 +229,13 @@ export default function AdminEnterprises() {
                     >
                       {enterprise.isActive ? '✅ Активно' : '❌ Неактивно'}
                     </button>
+                    <button
+                        onClick={() => handleDeleteEnterprise(enterprise.id)}
+                        className="px-3 py-1.5 bg-red-100 text-red-700 border border-red-200 rounded-xl font-semibold text-sm hover:bg-red-200 transition-all"
+                        title="Удалить предприятие"
+                      >
+                        🗑️ Удалить
+                      </button>
                   </div>
 
                   <p className="text-gray-600 mb-4 leading-relaxed">{enterprise.description}</p>

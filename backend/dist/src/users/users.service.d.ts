@@ -59,12 +59,12 @@ export declare class UsersService {
         createdAt: Date;
         promoCodes: {
             id: string;
-            _count: {
-                registrations: number;
-            };
             code: string;
             isActive: boolean;
             usedCount: number;
+            _count: {
+                registrations: number;
+            };
         }[];
     }[]>;
     getAllWorkers(): Promise<{
@@ -84,14 +84,14 @@ export declare class UsersService {
         };
         applications: {
             id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
-            appliedAt: Date;
             job: {
-                title: string;
                 enterprise: {
                     name: string;
                 };
+                title: string;
             };
+            status: import(".prisma/client").$Enums.ApplicationStatus;
+            appliedAt: Date;
         }[];
         _count: {
             applications: number;
@@ -111,13 +111,13 @@ export declare class UsersService {
         };
         applications: {
             id: string;
-            status: import(".prisma/client").$Enums.ApplicationStatus;
             job: {
-                title: string;
                 enterprise: {
                     name: string;
                 };
+                title: string;
             };
+            status: import(".prisma/client").$Enums.ApplicationStatus;
         }[];
     }[]>;
 }

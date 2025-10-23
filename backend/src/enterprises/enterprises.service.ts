@@ -19,6 +19,7 @@ export class EnterprisesService {
     });
   }
 
+
   async findAll() {
     return this.prisma.enterprise.findMany({
       include: {
@@ -71,21 +72,39 @@ export class EnterprisesService {
   }
 
   async remove(id: string) {
-    const activeJobs = await this.prisma.job.count({
-      where: {
-        enterpriseId: id,
-        isActive: true,
-      },
-    });
-
-    if (activeJobs > 0) {
-      throw new BadRequestException('Нельзя удалить предприятие с активными работами');
+  // Проверяем существование предприятия
+  const enterprise = await this.prisma.enterprise.findUnique({
+    where: { id },
+    include: {
+      jobs: {
+        include: {
+          _count: {
+            select: {
+              applications: true
+            }
+          }
+        }
+      }
     }
+  });
 
-    return this.prisma.enterprise.delete({
-      where: { id },
-    });
+  if (!enterprise) {
+    throw new NotFoundException('Предприятие не найдено');
   }
+
+  // Предупреждаем если есть активные вакансии
+  const activeJobs = enterprise.jobs.filter(job => job.isActive);
+  if (activeJobs.length > 0) {
+    throw new BadRequestException(
+      `Нельзя удалить предприятие с активными вакансиями. Активных вакансий: ${activeJobs.length}`
+    );
+  }
+
+  // Удаляем предприятие (вакансии и отклики удалятся каскадно благодаря настройкам Prisma)
+  return this.prisma.enterprise.delete({
+    where: { id },
+  });
+}
 
   async toggleActive(id: string) {
     const enterprise = await this.prisma.enterprise.findUnique({

@@ -74,14 +74,26 @@ let EnterprisesService = class EnterprisesService {
         });
     }
     async remove(id) {
-        const activeJobs = await this.prisma.job.count({
-            where: {
-                enterpriseId: id,
-                isActive: true,
-            },
+        const enterprise = await this.prisma.enterprise.findUnique({
+            where: { id },
+            include: {
+                jobs: {
+                    include: {
+                        _count: {
+                            select: {
+                                applications: true
+                            }
+                        }
+                    }
+                }
+            }
         });
-        if (activeJobs > 0) {
-            throw new common_1.BadRequestException('Нельзя удалить предприятие с активными работами');
+        if (!enterprise) {
+            throw new common_1.NotFoundException('Предприятие не найдено');
+        }
+        const activeJobs = enterprise.jobs.filter(job => job.isActive);
+        if (activeJobs.length > 0) {
+            throw new common_1.BadRequestException(`Нельзя удалить предприятие с активными вакансиями. Активных вакансий: ${activeJobs.length}`);
         }
         return this.prisma.enterprise.delete({
             where: { id },

@@ -6,13 +6,13 @@ export declare class EnterprisesController {
     constructor(enterprisesService: EnterprisesService);
     create(dto: CreateEnterpriseDto): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     findAll(): Promise<({
         _count: {
@@ -20,13 +20,13 @@ export declare class EnterprisesController {
         };
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     })[]>;
     findOne(id: string): Promise<{
         jobs: ({
@@ -35,11 +35,11 @@ export declare class EnterprisesController {
             };
         } & {
             id: string;
+            description: string;
+            location: string;
+            isActive: boolean;
             createdAt: Date;
             updatedAt: Date;
-            description: string;
-            isActive: boolean;
-            location: string;
             enterpriseId: string;
             title: string;
             requirements: string;
@@ -49,42 +49,42 @@ export declare class EnterprisesController {
         })[];
     } & {
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     update(id: string, dto: UpdateEnterpriseDto): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     remove(id: string): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
     toggleActive(id: string): Promise<{
         id: string;
-        createdAt: Date;
-        updatedAt: Date;
         name: string;
         description: string | null;
-        isActive: boolean;
         location: string;
         contactInfo: import("@prisma/client/runtime/library").JsonValue;
+        isActive: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }>;
 }
