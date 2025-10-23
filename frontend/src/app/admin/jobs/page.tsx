@@ -127,7 +127,7 @@ export default function AdminJobs() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="backdrop-blur-xl bg-white/70 border border-blue-200/50 rounded-3xl p-6 sm:p-8 shadow-2xl mb-6">
+        <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-lg mb-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-2">
@@ -140,7 +140,7 @@ export default function AdminJobs() {
             </div>
             <button
               onClick={() => setShowForm(!showForm)}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:shadow-xl hover:shadow-blue-500/50 transition-all transform hover:scale-105 flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center gap-2"
             >
               {showForm ? "✕ Отмена" : "+ Создать вакансию"}
             </button>
@@ -149,7 +149,7 @@ export default function AdminJobs() {
 
         {/* Create Form */}
         {showForm && (
-          <div className="backdrop-blur-xl bg-white/80 border border-blue-200/50 rounded-3xl p-6 sm:p-8 shadow-2xl mb-6">
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-lg mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Новая вакансия</h2>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -161,7 +161,7 @@ export default function AdminJobs() {
                 <select
                   value={form.enterpriseId}
                   onChange={(e) => setForm({ ...form, enterpriseId: e.target.value })}
-                  className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   required
                 >
                   <option value="">Выберите предприятие</option>
@@ -183,7 +183,7 @@ export default function AdminJobs() {
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                   placeholder="Например: Сварщик 5 разряда"
-                  className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   required
                 />
               </div>
@@ -191,9 +191,6 @@ export default function AdminJobs() {
               {/* Описание */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
                   Описание вакансии *
                 </label>
                 <div className="relative">
@@ -202,10 +199,10 @@ export default function AdminJobs() {
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                     placeholder="Опишите вакансию подробно:&#10;• Основные обязанности&#10;• Чем будет заниматься сотрудник&#10;• График работы (например: вахта 30/30, 45/45)&#10;• Особенности работы"
                     rows={8}
-                    className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none font-mono text-sm"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-gray-900"
                     required
                   />
-                  <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                  <div className="absolute bottom-3 right-3 text-xs text-gray-500">
                     {form.description.length} символов
                   </div>
                 </div>
@@ -217,9 +214,6 @@ export default function AdminJobs() {
               {/* Требования */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
                   Требования к кандидату
                 </label>
                 <div className="relative">
@@ -228,9 +222,9 @@ export default function AdminJobs() {
                     onChange={(e) => setForm({ ...form, requirements: e.target.value })}
                     placeholder="Укажите требования:&#10;• Опыт работы (от 1 года, от 3 лет и т.д.)&#10;• Необходимые навыки и квалификация&#10;• Документы (медкнижка, допуски, сертификаты)&#10;• Личные качества"
                     rows={6}
-                    className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-green-200/50 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none font-mono text-sm"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-gray-900"
                   />
-                  <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                  <div className="absolute bottom-3 right-3 text-xs text-gray-500">
                     {form.requirements.length} символов
                   </div>
                 </div>
@@ -239,9 +233,6 @@ export default function AdminJobs() {
               {/* Зарплата */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
                   Зарплата от (₽) *
                 </label>
                 <input
@@ -249,16 +240,13 @@ export default function AdminJobs() {
                   value={form.salaryMin}
                   onChange={(e) => setForm({ ...form, salaryMin: Number(e.target.value) })}
                   placeholder="80000"
-                  className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
                   Зарплата до (₽) *
                 </label>
                 <input
@@ -266,7 +254,7 @@ export default function AdminJobs() {
                   value={form.salaryMax}
                   onChange={(e) => setForm({ ...form, salaryMax: Number(e.target.value) })}
                   placeholder="150000"
-                  className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   required
                 />
               </div>
@@ -274,9 +262,6 @@ export default function AdminJobs() {
               {/* Условия работы */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
                   Условия работы
                 </label>
                 <div className="relative">
@@ -285,9 +270,9 @@ export default function AdminJobs() {
                     onChange={(e) => setForm({ ...form, workConditions: e.target.value })}
                     placeholder="Опишите условия:&#10;• Проживание (общежитие, гостиница, количество человек в комнате)&#10;• Питание (3-разовое, компенсация)&#10;• Проезд (оплата билетов, компенсация)&#10;• Спецодежда и инструменты&#10;• Медицинское обслуживание&#10;• Другие бонусы"
                     rows={7}
-                    className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-purple-200/50 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none font-mono text-sm"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-gray-900"
                   />
-                  <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                  <div className="absolute bottom-3 right-3 text-xs text-gray-500">
                     {form.workConditions.length} символов
                   </div>
                 </div>
@@ -299,10 +284,6 @@ export default function AdminJobs() {
               {/* Локация */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
                   Локация *
                 </label>
                 <input
@@ -310,7 +291,7 @@ export default function AdminJobs() {
                   value={form.location}
                   onChange={(e) => setForm({ ...form, location: e.target.value })}
                   placeholder="Например: Тюменская область, Ханты-Мансийский АО"
-                  className="w-full px-4 py-3 backdrop-blur-xl bg-white/60 border border-blue-200/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-900"
                   required
                 />
               </div>
@@ -318,7 +299,7 @@ export default function AdminJobs() {
 
             <button
               onClick={handleCreate}
-              className="mt-6 w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:shadow-2xl hover:shadow-blue-500/50 transition-all transform hover:scale-105 text-lg"
+              className="mt-6 w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:shadow-lg transition-all transform hover:scale-105 text-lg"
             >
               🚀 Создать вакансию
             </button>
@@ -330,19 +311,19 @@ export default function AdminJobs() {
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="backdrop-blur-xl bg-white/70 border border-blue-200/50 rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:shadow-blue-300/30 transition-all"
+              className="bg-white border border-gray-200 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all"
             >
               <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{job.title}</h3>
                   <div className="flex flex-wrap gap-2 text-sm text-gray-600">
-                    <span className="backdrop-blur-sm bg-blue-100/60 px-3 py-1 rounded-lg border border-blue-200">
+                    <span className="bg-blue-100 px-3 py-1 rounded-lg border border-blue-200">
                       <strong>Предприятие:</strong> {job.enterprise?.name}
                     </span>
-                    <span className="backdrop-blur-sm bg-purple-100/60 px-3 py-1 rounded-lg border border-purple-200">
+                    <span className="bg-purple-100 px-3 py-1 rounded-lg border border-purple-200">
                       <strong>Локация:</strong> {job.location}
                     </span>
-                    <span className="backdrop-blur-sm bg-green-100/60 px-3 py-1 rounded-lg border border-green-200">
+                    <span className="bg-green-100 px-3 py-1 rounded-lg border border-green-200">
                       <strong>Зарплата:</strong> {job.salaryMin?.toLocaleString()} - {job.salaryMax?.toLocaleString()} ₽
                     </span>
                   </div>
@@ -359,7 +340,7 @@ export default function AdminJobs() {
                   >
                     {job.isActive ? '✅ Активна' : '❌ Неактивна'}
                   </button>
-                  <div className="backdrop-blur-sm bg-blue-100/60 px-3 py-1.5 rounded-xl text-sm font-semibold text-blue-700 border border-blue-200">
+                  <div className="bg-blue-100 px-3 py-1.5 rounded-xl text-sm font-semibold text-blue-700 border border-blue-200">
                     {job._count?.applications || 0} откликов
                   </div>
                 </div>
@@ -367,39 +348,24 @@ export default function AdminJobs() {
 
               {/* Описание */}
               {job.description && (
-                <div className="mb-4 backdrop-blur-sm bg-blue-50/60 border border-blue-200/50 rounded-2xl p-4">
-                  <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Описание
-                  </h4>
+                <div className="mb-4 bg-blue-50 border border-blue-200 rounded-2xl p-4">
+                  <h4 className="font-bold text-gray-900 mb-2">Описание</h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.description}</p>
                 </div>
               )}
 
               {/* Требования */}
               {job.requirements && (
-                <div className="mb-4 backdrop-blur-sm bg-green-50/60 border border-green-200/50 rounded-2xl p-4">
-                  <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Требования
-                  </h4>
+                <div className="mb-4 bg-green-50 border border-green-200 rounded-2xl p-4">
+                  <h4 className="font-bold text-gray-900 mb-2">Требования</h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.requirements}</p>
                 </div>
               )}
 
               {/* Условия */}
               {job.workConditions && (
-                <div className="mb-4 backdrop-blur-sm bg-purple-50/60 border border-purple-200/50 rounded-2xl p-4">
-                  <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    Условия работы
-                  </h4>
+                <div className="mb-4 bg-purple-50 border border-purple-200 rounded-2xl p-4">
+                  <h4 className="font-bold text-gray-900 mb-2">Условия работы</h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.workConditions}</p>
                 </div>
               )}
@@ -411,7 +377,7 @@ export default function AdminJobs() {
 
                 <button
                   onClick={() => handleDelete(job.id)}
-                  className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-red-500/30 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105 flex items-center justify-center gap-2"
                 >
                   🗑️ Удалить
                 </button>
@@ -419,7 +385,7 @@ export default function AdminJobs() {
 
               {/* Applications Preview */}
               {job._count && job._count.applications > 0 && (
-                <div className="mt-4 backdrop-blur-sm bg-orange-50/60 border border-orange-200/50 rounded-xl p-3 text-sm">
+                <div className="mt-4 bg-orange-50 border border-orange-200 rounded-xl p-3 text-sm">
                   <span className="font-semibold text-orange-700">
                     {job._count.applications} отклик{job._count.applications === 1 ? '' : job._count.applications > 1 && job._count.applications < 5 ? 'а' : 'ов'}
                   </span>
@@ -435,13 +401,13 @@ export default function AdminJobs() {
         </div>
 
         {jobs.length === 0 && !showForm && (
-          <div className="backdrop-blur-xl bg-white/70 border border-blue-200/50 rounded-3xl p-12 text-center shadow-2xl">
+          <div className="bg-white border border-gray-200 rounded-3xl p-12 text-center shadow-lg">
             <div className="text-6xl mb-4">📋</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">Вакансий пока нет</h3>
             <p className="text-gray-600 mb-6">Создайте первую вакансию чтобы начать привлекать кандидатов</p>
             <button
               onClick={() => setShowForm(true)}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:shadow-xl hover:shadow-blue-500/50 transition-all transform hover:scale-105"
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105"
             >
               + Создать вакансию
             </button>
