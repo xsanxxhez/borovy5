@@ -97,14 +97,21 @@ export default function Vacancies() {
                   </div>
                 </div>
 
-                <div className="px-6 py-4 bg-gray-50 border-t">
+                <div className="px-6 py-4 bg-gray-50 border-t flex gap-2">
+                  <Link
+                    href={`/vacancies/${job.id}`}
+                    className="flex-1 px-4 py-2.5 border-2 border-blue-600 text-blue-700 text-center rounded-lg font-semibold hover:bg-blue-50 transition-all"
+                  >
+                     Подробнее
+                  </Link>
                   <Link
                     href="/auth/register"
-                    className="block w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center rounded-lg font-semibold hover:shadow-lg transition-all"
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center rounded-lg font-semibold hover:shadow-lg transition-all"
                   >
                     Откликнуться
                   </Link>
                 </div>
+
               </div>
             ))}
           </div>
