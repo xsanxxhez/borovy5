@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
-// Добавьте интерфейс для типизации
 interface Job {
   id: string;
   title: string;
@@ -36,7 +35,6 @@ interface Enterprise {
 }
 
 export default function AdminJobs() {
-  // ТИПИЗИРУЙТЕ useState
   const [jobs, setJobs] = useState<Job[]>([]);
   const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
   const [loading, setLoading] = useState(true);
@@ -190,10 +188,13 @@ export default function AdminJobs() {
                 />
               </div>
 
-              {/* Описание - УЛУЧШЕННОЕ */}
+              {/* Описание */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  📝 Описание вакансии *
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Описание вакансии *
                 </label>
                 <div className="relative">
                   <textarea
@@ -213,10 +214,13 @@ export default function AdminJobs() {
                 </p>
               </div>
 
-              {/* Требования - УЛУЧШЕННОЕ */}
+              {/* Требования */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  ✅ Требования к кандидату
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Требования к кандидату
                 </label>
                 <div className="relative">
                   <textarea
@@ -235,7 +239,10 @@ export default function AdminJobs() {
               {/* Зарплата */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  💰 Зарплата от (₽) *
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Зарплата от (₽) *
                 </label>
                 <input
                   type="number"
@@ -249,7 +256,10 @@ export default function AdminJobs() {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  💰 Зарплата до (₽) *
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Зарплата до (₽) *
                 </label>
                 <input
                   type="number"
@@ -261,10 +271,13 @@ export default function AdminJobs() {
                 />
               </div>
 
-              {/* Условия работы - УЛУЧШЕННОЕ */}
+              {/* Условия работы */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  🏠 Условия работы
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Условия работы
                 </label>
                 <div className="relative">
                   <textarea
@@ -286,7 +299,11 @@ export default function AdminJobs() {
               {/* Локация */}
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  📍 Локация *
+                  <svg className="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Локация *
                 </label>
                 <input
                   type="text"
@@ -310,7 +327,7 @@ export default function AdminJobs() {
 
         {/* Jobs List */}
         <div className="space-y-4">
-          {jobs.map((job, index) => (
+          {jobs.map((job) => (
             <div
               key={job.id}
               className="backdrop-blur-xl bg-white/70 border border-blue-200/50 rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:shadow-blue-300/30 transition-all"
@@ -348,31 +365,40 @@ export default function AdminJobs() {
                 </div>
               </div>
 
-              {/* УЛУЧШЕННОЕ отображение описания */}
+              {/* Описание */}
               {job.description && (
                 <div className="mb-4 backdrop-blur-sm bg-blue-50/60 border border-blue-200/50 rounded-2xl p-4">
                   <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    📝 Описание
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Описание
                   </h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.description}</p>
                 </div>
               )}
 
-              {/* УЛУЧШЕННОЕ отображение требований */}
+              {/* Требования */}
               {job.requirements && (
                 <div className="mb-4 backdrop-blur-sm bg-green-50/60 border border-green-200/50 rounded-2xl p-4">
                   <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    ✅ Требования
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Требования
                   </h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.requirements}</p>
                 </div>
               )}
 
-              {/* УЛУЧШЕННОЕ отображение условий */}
+              {/* Условия */}
               {job.workConditions && (
                 <div className="mb-4 backdrop-blur-sm bg-purple-50/60 border border-purple-200/50 rounded-2xl p-4">
                   <h4 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    🏠 Условия работы
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Условия работы
                   </h4>
                   <p className="text-gray-700 whitespace-pre-line leading-relaxed">{job.workConditions}</p>
                 </div>
@@ -392,14 +418,14 @@ export default function AdminJobs() {
               </div>
 
               {/* Applications Preview */}
-              {job._count?.applications > 0 && (
+              {job._count && job._count.applications > 0 && (
                 <div className="mt-4 backdrop-blur-sm bg-orange-50/60 border border-orange-200/50 rounded-xl p-3 text-sm">
                   <span className="font-semibold text-orange-700">
                     {job._count.applications} отклик{job._count.applications === 1 ? '' : job._count.applications > 1 && job._count.applications < 5 ? 'а' : 'ов'}
                   </span>
                   {job.applications && (
                     <span className="text-gray-600 ml-2">
-                      • Одобрено: {job.applications.filter((a: any) => a.status === 'APPROVED').length}
+                      • Одобрено: {job.applications.filter((a) => a.status === 'APPROVED').length}
                     </span>
                   )}
                 </div>
