@@ -11,7 +11,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://borovy-frontend.onrender.com',
+    'https://borovy.of.by'
     ],
     credentials: true,
   });
