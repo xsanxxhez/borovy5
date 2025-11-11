@@ -10,7 +10,6 @@ async function bootstrap() {
         origin: [
             'http://localhost:3000',
             'http://localhost:3001',
-            'https://borovy.of.by',
         ],
         credentials: true,
     });
@@ -27,7 +26,7 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('api/docs', app, document);
-    const port = process.env.PORT || 10000;
+    const port = process.env.PORT || 3001;
     await app.listen(port);
     console.log(`🚀 Application is running on: http://localhost:${port}`);
     console.log(`📚 Swagger documentation: http://localhost:${port}/api/docs`);

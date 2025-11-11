@@ -1,5 +1,6 @@
 export async function api(endpoint: string, options: RequestInit = {}) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+
   
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   
