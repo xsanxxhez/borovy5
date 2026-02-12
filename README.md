@@ -34,7 +34,6 @@ BOROVY - это платформа для работников вахт, где 
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/50456e01-5eee-47ae-8ffe-9e61116a92d4" />
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/cbef87d7-9198-4165-a77c-f6a733ff615e" />
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/54bdb493-e7ea-4af0-81cb-27e369d22c0e" />
-<img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/1d067053-0573-4b83-9e7e-9c4672ad6d0c" />
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/7fc7ca64-7da8-43d4-a88a-4371b346a658" />
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/0472ab1c-8e64-4ca3-8ef0-c0c966d4e9b0" />
 <img width="1710" height="1107" alt="image" src="https://github.com/user-attachments/assets/8f9daef1-6415-4883-bf03-02606bea2880" />
